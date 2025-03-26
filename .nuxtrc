@@ -1,0 +1,2 @@
+# Configuration for `@nuxt/devtools`
+devtools.enabled=true
