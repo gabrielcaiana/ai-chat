@@ -7,4 +7,11 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+
+  runtimeConfig: {
+    openaiApiKey: 'test',
+    public: {
+      apiBase: 'http://localhost:3000/api'
+    }
+  }
 })
