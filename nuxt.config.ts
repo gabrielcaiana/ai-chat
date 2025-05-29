@@ -14,4 +14,12 @@ export default defineNuxtConfig({
       apiBase: "http://localhost:3000/api",
     },
   },
+
+  mdc: {
+    highlight: {
+      // https://shiki.matsu.io/themes
+      theme: "aurora-x",
+      langs: ["html", "markdown", "vue", "typescript", "javascript"],
+    },
+  },
 });

@@ -4,3 +4,4 @@ devtools.enabled=true
 # Nuxt modules
 modules[]=@nuxt/ui
 modules[]=@nuxt/eslint
+modules[]=@nuxtjs/mdc
