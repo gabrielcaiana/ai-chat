@@ -6,6 +6,7 @@ const { showScrollButton, scrollToBottom, pinToBottom } = useChatScroll();
 const props = defineProps<{
   messages: ChatMessage[];
   chat: Chat;
+  typing: boolean;
 }>();
 
 const emit = defineEmits(["send-message"]);
@@ -40,13 +41,15 @@ watch(props.messages, pinToBottom, { deep: true });
             class="message"
             :class="{
               'message-user': message.role === 'user',
-              'message-ai': message.role === 'assistant'
+              'message-ai': message.role === 'assistant',
             }"
           >
             <div class="message-content">
               {{ message.content }}
             </div>
           </div>
+
+          <span v-if="typing" class="typing-indicator"> &#9611; </span>
         </div>
 
         <div class="message-form-container">
@@ -56,7 +59,7 @@ watch(props.messages, pinToBottom, { deep: true });
               color="neutral"
               variant="outline"
               icon="i-heroicons-arrow-down"
-              class="rounded-full shadow-sm"
+              class="rounded-full shadow-sm cursor-pointer"
               @click="() => scrollToBottom()"
             />
           </div>
@@ -195,5 +198,11 @@ watch(props.messages, pinToBottom, { deep: true });
 
 .message-input::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+.typing-indicator {
+  display: inline-block;
+  animation: pulse 1s infinite;
+  margin-left: 0.25rem;
 }
 </style>
