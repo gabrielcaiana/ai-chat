@@ -1,7 +1,18 @@
 {
-  "name": "nuxt-app",
+  "name": "ai-chat",
   "private": true,
   "type": "module",
+  "author": "gabrielcaiana",
+  "license": "MIT",
+  "version": "0.0.0",
+  "description": "A simple AI chat application",
+  "keywords": [
+    "ai",
+    "chat",
+    "nuxt",
+    "vue"
+  ],
+  "homepage": "https://github.com/gabrielcaiana/ai-chat",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -12,10 +23,13 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
+    "@ai-sdk/openai": "1.2.0",
     "@nuxt/eslint": "1.2.0",
     "@nuxt/ui": "^3.0.1",
+    "ai": "4.1.51",
     "eslint": "^9.0.0",
     "nuxt": "^3.16.1",
+    "ollama-ai-provider": "1.2.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },

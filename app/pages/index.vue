@@ -1,6 +1,6 @@
 <template>
   <UContainer class="page-container">
-    <h1 class="title">Nuxt Chat</h1>
+    <h1 class="title">AI Chat</h1>
     <UButton to="/chat" class="button"> Start Chat </UButton>
   </UContainer>
 </template>
