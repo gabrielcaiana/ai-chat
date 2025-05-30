@@ -12,15 +12,28 @@ export default defineNuxtConfig({
     openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
     public: {
       appEnv: process.env.NUXT_PUBLIC_APP_ENV,
-      baseUrl: process.env.NUXT_PUBLIC_API_BASE,
+      baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
     },
   },
 
   mdc: {
     highlight: {
       // https://shiki.matsu.io/themes
-      theme: "aurora-x",
-      langs: ["html", "markdown", "vue", "typescript", "javascript"],
+      theme: "catppuccin-frappe",
+      langs: [
+        "js",
+        "jsx",
+        "json",
+        "ts",
+        "tsx",
+        "vue",
+        "css",
+        "html",
+        "bash",
+        "md",
+        "mdc",
+        "yaml",
+      ],
     },
   },
 });

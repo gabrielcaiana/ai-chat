@@ -13,7 +13,7 @@ applications:
           commands:
             - mkdir -p .amplify-hosting/compute/default
             - echo "NUXT_PUBLIC_APP_ENV=$NUXT_PUBLIC_APP_ENV" >> .amplify-hosting/compute/default/.env
-            - echo "NUXT_PUBLIC_API_BASE=$NUXT_PUBLIC_API_BASE" >> .amplify-hosting/compute/default/.env
+            - echo "NUXT_PUBLIC_BASE_URL=$NUXT_PUBLIC_BASE_URL" >> .amplify-hosting/compute/default/.env
             - echo "NUXT_OPENAI_API_KEY=$NUXT_OPENAI_API_KEY" >> .amplify-hosting/compute/default/.env
       artifacts:
         baseDirectory: .output/public
