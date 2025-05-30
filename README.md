@@ -8,14 +8,14 @@
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
 </p>
 
-A modern AI chat application built with Nuxt 3, Vue.js, and OpenAI integration. This project provides a clean and intuitive interface for interacting with AI models.
+A modern AI chat application built with Nuxt 3, Vue.js, and OpenAI integration. This project provides a clean and intuitive interface for interacting with AI models, using Ollama locally for development and OpenAI for production.
 
 ## ✨ Features
 
 - 🎨 Modern and responsive UI with Nuxt UI
 - 🌙 Theme support with Material Design Components (MDC)
 - 💬 Real-time chat interface
-- 🤖 OpenAI integration
+- 🤖 Dual AI model support (Ollama for development, OpenAI for production)
 - 📝 Markdown support with syntax highlighting
 - 🔄 Auto-scrolling chat window
 - ⌨️ Multi-line input support
@@ -27,7 +27,8 @@ A modern AI chat application built with Nuxt 3, Vue.js, and OpenAI integration. 
 - [Nuxt 3](https://nuxt.com/) - Vue.js Framework
 - [Nuxt UI](https://ui.nuxt.com/) - UI Components
 - [@nuxtjs/mdc](https://mdc.nuxtjs.org/) - Material Design Components
-- [OpenAI SDK](https://platform.openai.com/) - AI Integration
+- [OpenAI SDK](https://platform.openai.com/) - Production AI Integration
+- [Ollama](https://ollama.ai/) - Development AI Integration
 - [TypeScript](https://www.typescriptlang.org/) - Type Safety
 
 ## 📦 Project Structure
@@ -41,11 +42,13 @@ nuxt-chat/
 │   │   └── MarkdownRenderer.vue # Markdown rendering
 │   ├── pages/            # Application routes
 │   └── assets/          # Static assets
-├── server/             # Server-side code
+├── server/             # Server-side code (See server/README.md)
 ├── public/             # Public static files
 ├── .nuxt/              # Nuxt build files
 └── nuxt.config.ts      # Nuxt configuration
 ```
+
+For detailed information about the server API and AI integration, see [Server API Documentation](server/README.md).
 
 ## 🚀 Getting Started
 
@@ -53,13 +56,14 @@ nuxt-chat/
 
 - Node.js (>= 18.0.0)
 - pnpm (>= 8.10.0)
+- Ollama (for development)
 
 ### Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/nuxt-chat.git
+git clone https://github.com/gabrielcaiana/nuxt-chat.git
 cd nuxt-chat
 ```
 
@@ -69,17 +73,39 @@ cd nuxt-chat
 pnpm install
 ```
 
-3. Create a `.env` file in the root directory:
+3. Install and setup Ollama (for development):
+
+```bash
+# macOS/Linux
+curl https://ollama.ai/install.sh | sh
+
+# Windows
+# Download from https://ollama.ai/download
+
+# Pull the model
+ollama pull llama3.2
+```
+
+4. Create a `.env` file in the root directory:
 
 ```env
-NUXT_OPENAI_API_KEY=your_openai_api_key
+# Development
 NUXT_PUBLIC_APP_ENV=development
 NUXT_PUBLIC_BASE_URL=http://localhost:3000
+
+# Production only
+NUXT_OPENAI_API_KEY=your_openai_api_key  # Only required in production
 ```
 
 ### Development
 
-Start the development server:
+1. Start Ollama server:
+
+```bash
+ollama serve
+```
+
+2. Start the development server in a new terminal:
 
 ```bash
 pnpm dev
