@@ -11,9 +11,10 @@ applications:
             - pnpm run build
         postBuild:
           commands:
-            - echo "NUXT_APP_ENV=$NUXT_APP_ENV" >> $CODEBUILD_SRC_DIR/.output/public/.env
-            - echo "NUXT_API_BASE=$NUXT_API_BASE" >> $CODEBUILD_SRC_DIR/.output/public/.env
-            - echo "NUXT_OPENAI_API_KEY=$NUXT_OPENAI_API_KEY" >> $CODEBUILD_SRC_DIR/.output/public/.env
+            - mkdir -p .amplify-hosting/compute/default
+            - echo "NUXT_APP_ENV=$NUXT_APP_ENV" >> .amplify-hosting/compute/default/.env
+            - echo "NUXT_API_BASE=$NUXT_API_BASE" >> .amplify-hosting/compute/default/.env
+            - echo "NUXT_OPENAI_API_KEY=$NUXT_OPENAI_API_KEY" >> .amplify-hosting/compute/default/.env
       artifacts:
         baseDirectory: .output/public
         files:
