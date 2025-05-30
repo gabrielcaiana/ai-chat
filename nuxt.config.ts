@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     openaiApiKey: "",
     public: {
+      appEnv: process.env.APP_ENV || "development",
       apiBase: "http://localhost:3000/api",
     },
   },
