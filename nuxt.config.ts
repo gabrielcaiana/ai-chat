@@ -9,10 +9,10 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
 
   runtimeConfig: {
-    openaiApiKey: "",
+    openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
     public: {
-      appEnv: "",
-      baseUrl: "",
+      appEnv: process.env.NUXT_PUBLIC_APP_ENV,
+      baseUrl: process.env.NUXT_PUBLIC_API_BASE,
     },
   },
 
