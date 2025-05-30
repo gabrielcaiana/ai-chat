@@ -1,24 +1,30 @@
 version: 1
-applications:
-  - frontend:
-      phases:
-        preBuild:
-          commands:
-            - corepack enable
-            - pnpm install --frozen-lockfile
-        build:
-          commands:
-            - pnpm run build
-        postBuild:
-          commands:
-            - echo "NUXT_APP_ENV=$NUXT_APP_ENV" >> .amplify-hosting/compute/default/.env
-            - echo "NUXT_API_BASE=$NUXT_API_BASE" >> .amplify-hosting/compute/default/.env
-            - echo "NUXT_OPENAI_API_KEY=$NUXT_OPENAI_API_KEY" >> .amplify-hosting/compute/default/.env
-      artifacts:
-        baseDirectory: .output/public
-        files:
-          - "**/*"
-      cache:
-        paths:
-          - node_modules/**/*
-    appRoot: .
+backend:
+  phases:
+    build:
+      commands:
+        - "# Execute Amplify CLI with the helper script"
+        - amplifyPush --simple
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - corepack enable
+        - pnpm install --frozen-lockfile
+    build:
+      commands:
+        - pnpm run build
+    postBuild:
+      commands:
+        - echo "NUXT_APP_ENV=$NUXT_APP_ENV" >> .output/public/_env.json
+        - echo "NUXT_API_BASE=$NUXT_API_BASE" >> .output/public/_env.json
+        - echo "NUXT_OPENAI_API_KEY=$NUXT_OPENAI_API_KEY" >> .output/public/_env.json
+  artifacts:
+    baseDirectory: .output
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/*
+      - .nuxt/**/*
+      - .output/**/*
