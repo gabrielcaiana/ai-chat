@@ -1,4 +1,4 @@
-<h1 align="center"># AI Chat 🤖🚧</h1>
+<h1 align="center"># AI Chat 🚧</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/status-in%20development-yellow" alt="Status: In Development">
