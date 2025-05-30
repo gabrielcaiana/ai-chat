@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     openaiApiKey: "",
     public: {
       appEnv: "",
-      apiBase: "",
+      baseUrl: "",
     },
   },
 
