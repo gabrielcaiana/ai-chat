@@ -1,12 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-11-01",
-
-  future: {
-    compatibilityVersion: 4,
-  },
-
   css: ["./layers/base/app/assets/css/main.css"],
+
+  typescript: {
+    typeCheck: "build",
+    strict: true,
+  },
 
   runtimeConfig: {
     openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
