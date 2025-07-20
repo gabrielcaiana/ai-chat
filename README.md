@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
 </p>
 
-A modern AI chat application built with Nuxt 3, Vue.js, and OpenAI integration. This project provides a clean and intuitive interface for interacting with AI models, using Ollama locally for development and OpenAI for production.
+A modern AI chat application built with Nuxt 4, Vue.js, and OpenAI integration. This project provides a clean and intuitive interface for interacting with AI models, using Ollama locally for development and OpenAI for production.
 
 ## ✨ Features
 
@@ -24,7 +24,7 @@ A modern AI chat application built with Nuxt 3, Vue.js, and OpenAI integration. 
 ## 🛠️ Tech Stack
 
 - [Vue.js 3](https://vuejs.org/) - Progressive JavaScript Framework
-- [Nuxt 3](https://nuxt.com/) - Vue.js Framework
+- [Nuxt 4](https://nuxt.com/) - Vue.js Framework
 - [Nuxt UI](https://ui.nuxt.com/) - UI Components
 - [@nuxtjs/mdc](https://mdc.nuxtjs.org/) - Material Design Components
 - [OpenAI SDK](https://platform.openai.com/) - Production AI Integration
