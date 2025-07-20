@@ -18,6 +18,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -26,17 +27,17 @@
   "dependencies": {
     "@ai-sdk/openai": "1.2.0",
     "@nuxt/eslint": "1.2.0",
-    "@nuxt/ui": "^3.0.1",
+    "@nuxt/ui": "^3.2.0",
     "ai": "4.1.51",
-    "eslint": "^9.0.0",
-    "nuxt": "^3.16.1",
+    "eslint": "^9.31.0",
+    "nuxt": "^4.0.0",
     "ollama-ai-provider": "1.2.0",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
   },
   "packageManager": "pnpm@8.10.0+sha512.9c2cb83f2b6cf6a25d8c58300bf99197c7ef3be84cf3e766f29054b40b83b42f8aaba6fcc314a9ecf27c00f7ce80a757bb4c608800e7adbe2d29dc5c7056f5be",
   "devDependencies": {
-    "@nuxtjs/mdc": "^0.17.0",
-    "@types/node": "^22.15.26"
+    "@nuxtjs/mdc": "^0.17.2",
+    "@types/node": "^22.16.5"
   }
 }
