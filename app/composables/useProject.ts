@@ -8,19 +8,15 @@ export default function useproject(projectId: string) {
   );
 
   const updateProject = (updateProject: Partial<Project>) => {
-    if (!project) return;
+    if (!project.value?.id) return;
 
-    const index = projects.value.findIndex(
-      (project) => project.id === updateProject.id
-    );
+    const index = projects.value.findIndex((p) => p.id === project.value?.id);
 
     if (index === -1) return;
 
     projects.value[index] = {
       ...project.value,
       ...updateProject,
-      id: "1",
-      name: "New Project",
     };
   };
 
