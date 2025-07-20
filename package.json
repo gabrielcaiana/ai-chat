@@ -38,6 +38,7 @@
   "packageManager": "pnpm@8.10.0+sha512.9c2cb83f2b6cf6a25d8c58300bf99197c7ef3be84cf3e766f29054b40b83b42f8aaba6fcc314a9ecf27c00f7ce80a757bb4c608800e7adbe2d29dc5c7056f5be",
   "devDependencies": {
     "@nuxtjs/mdc": "^0.17.2",
-    "@types/node": "^22.16.5"
+    "@types/node": "^22.16.5",
+    "vue-tsc": "^3.0.3"
   }
 }
