@@ -7,7 +7,7 @@ export default function useproject(projectId: string) {
     projects.value.find((project) => project.id === projectId)
   );
 
-  const updateProject = (updateProject: Partial<Project>) => {
+  const updateProject = async (updateProject: Partial<Project>) => {
     if (!project.value?.id) return;
 
     const index = projects.value.findIndex((p) => p.id === project.value?.id);

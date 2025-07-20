@@ -1,10 +1,10 @@
-import type { Project } from "~/types";
+import type { Project } from "../types";
 import { MOCK_PROJECT } from "./mockData";
 
 export default function useProjects() {
   const projects = useState<Project[]>("projects", () => [MOCK_PROJECT]);
 
-  const createProject = () => {
+  function createProject() {
     const id = (projects.value.length + 1).toString();
     const project = {
       id,
@@ -12,10 +12,9 @@ export default function useProjects() {
     };
 
     projects.value.push(project);
-  };
 
-  return {
-    createProject,
-    projects,
-  };
+    return project;
+  }
+
+  return { projects, createProject };
 }
