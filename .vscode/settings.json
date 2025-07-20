@@ -9,5 +9,13 @@
   },
   "editor.quickSuggestions": {
     "strings": "on"
-  }
+  },
+  "css.validate": true,
+  "css.lint.unknownVendorPrefixes": "ignore",
+  "css.lint.validProperties": [],
+  "color-highlight.enable": true,
+  "color-highlight.markers": {
+    "enabled": true
+  },
+  "color-highlight.languages": ["css", "vue", "html"]
 }

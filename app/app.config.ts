@@ -1,8 +1,9 @@
 export default defineAppConfig({
   title: "Ai Chat",
-  ui: {
-    colors: {
-      primary: "blue",
-    },
-  },
+  // current using main.css theme colors
+  // ui: {
+  //   colors: {
+  //     primary: "blue",
+  //   },
+  // },
 });
