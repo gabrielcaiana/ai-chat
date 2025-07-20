@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
-  css: ["~/assets/css/main.css"],
+  css: ["./layers/base/app/assets/css/main.css"],
 
   runtimeConfig: {
     openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
