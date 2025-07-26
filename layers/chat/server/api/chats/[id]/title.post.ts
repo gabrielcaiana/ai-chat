@@ -11,5 +11,5 @@ export default defineEventHandler(async (e) => {
   const model = createOpenAIModel(useRuntimeConfig().openaiApiKey);
   const title = await generateChatTitle(model, message);
 
-  return updateChat(id, { title });
+  return updateChat(id as string, { title });
 });

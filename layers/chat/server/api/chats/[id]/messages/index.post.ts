@@ -1,11 +1,11 @@
 import { createMessageForChat } from "../../../../repository/chatRepository";
 
 export default defineEventHandler(async (e) => {
-  const { id: chatId } = getRouterParams(e);
+  const { id } = getRouterParams(e);
   const { content, role } = await readBody(e);
 
   return createMessageForChat({
-    chatId,
+    chatId: id as string,
     content,
     role,
   });

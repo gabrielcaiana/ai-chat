@@ -10,12 +10,12 @@ import {
 export default defineEventHandler(async (e) => {
   const { id } = getRouterParams(e);
 
-  const messages = await getMessagesByChatId(id);
+  const messages = await getMessagesByChatId(id as string);
   const model = createOpenAIModel(useRuntimeConfig().openaiApiKey);
   const reply = await generateChatResponse({ model, messages });
 
   return createMessageForChat({
-    chatId: id,
+    chatId: id as string,
     content: reply,
     role: "assistant",
   });
