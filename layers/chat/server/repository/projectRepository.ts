@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import type { Project } from "../../shared/types/types";
-import { MOCK_PROJECT } from "../../shared/utils/mockData";
 
 const projects: Project[] = [MOCK_PROJECT];
 
