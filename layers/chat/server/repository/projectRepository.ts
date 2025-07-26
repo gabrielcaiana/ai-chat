@@ -6,7 +6,7 @@ export function getAllProjects(): Project[] {
   return [...projects].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function getProjectById(id: string): Project | null {
+export async function getProjectById(id: string): Promise<Project | null> {
   return projects.find((p) => p.id === id) || null;
 }
 

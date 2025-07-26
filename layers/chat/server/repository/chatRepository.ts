@@ -36,7 +36,9 @@ export async function createChat(data: {
   return {
     ...newChat,
     messages: [],
-    project: data.projectId ? getProjectById(data.projectId) || null : null,
+    project: data.projectId
+      ? (await getProjectById(data.projectId)) || null
+      : null,
   };
 }
 
@@ -49,7 +51,9 @@ export async function getChatById(
   return {
     ...chat,
     messages: lastMessage ? [lastMessage] : [],
-    project: chat.projectId ? getProjectById(chat.projectId) || null : null,
+    project: chat.projectId
+      ? (await getProjectById(chat.projectId)) || null
+      : null,
   };
 }
 
@@ -75,7 +79,7 @@ export async function updateChat(
     ...updatedChat,
     messages: lastMessage ? [lastMessage] : [],
     project: updatedChat.projectId
-      ? getProjectById(updatedChat.projectId) || null
+      ? (await getProjectById(updatedChat.projectId)) || null
       : null,
   };
 }
@@ -90,7 +94,9 @@ export async function deleteChat(id: string): Promise<boolean> {
   return false;
 }
 
-export function getMessagesByChatId(chatId: string): ChatMessage[] {
+export async function getMessagesByChatId(
+  chatId: string
+): Promise<ChatMessage[]> {
   const chat = chats.find((c) => c.id === chatId);
   if (!chat) return [];
   return [...chat.messages].sort(
