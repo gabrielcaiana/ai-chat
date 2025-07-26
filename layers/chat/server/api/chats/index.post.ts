@@ -1,7 +1,10 @@
 import { createChat } from "../../repository/chatRepository";
 
-export default defineEventHandler((_e) => {
+export default defineEventHandler(async (e) => {
+  const { title, projectId } = await readBody(e);
+
   return createChat({
-    title: "New Chat",
+    title,
+    projectId,
   });
 });
