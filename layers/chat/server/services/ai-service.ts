@@ -34,3 +34,24 @@ export async function generateChatResponse({
 
   return response.text.trim();
 }
+
+export async function generateChatTitle(
+  model: LanguageModelV1,
+  firstMessage: string
+): Promise<string> {
+  const response = await generateText({
+    model,
+    messages: [
+      {
+        role: "system",
+        content: "summarize the message in 3 or less short words",
+      },
+      {
+        role: "user",
+        content: firstMessage,
+      },
+    ],
+  });
+
+  return response.text.trim();
+}
