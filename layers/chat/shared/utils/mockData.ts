@@ -1,5 +1,4 @@
-import type { Chat, ChatMessage, Project } from "../types/types";
-import { v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 
 // Mock data for initial messages
 const MOCK_MESSAGES: ChatMessage[] = [
