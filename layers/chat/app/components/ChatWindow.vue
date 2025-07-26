@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Chat, ChatMessage } from "../types";
-
 const { showScrollButton, scrollToBottom, pinToBottom } = useChatScroll();
 
 const props = defineProps<{

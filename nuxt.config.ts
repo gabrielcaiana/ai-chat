@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   // Custom aliases for better imports
   alias: {
     types: fileURLToPath(new URL("./layers/chat/app/types", import.meta.url)),
+    shared: fileURLToPath(new URL("./layers/chat/shared", import.meta.url)),
   },
 
   // Performance optimizations

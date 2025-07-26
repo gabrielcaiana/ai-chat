@@ -1,5 +1,3 @@
-import type { Chat } from "types";
-
 export function isWithinDays(date: Date, days: number): boolean {
   const now = new Date();
   const timeAgo = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
