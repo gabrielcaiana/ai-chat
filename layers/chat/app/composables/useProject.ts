@@ -1,22 +1,25 @@
-export default function useproject(projectId: string) {
+export default function useProject(projectId: string) {
   const { projects } = useProjects();
 
   const project = computed(() =>
-    projects.value.find((project) => project.id === projectId)
+    projects.value.find((p) => p.id === projectId)
   );
 
-  const updateProject = async (updateProject: Partial<Project>) => {
-    if (!project.value?.id) return;
+  async function updateProject(updatedProject: Partial<Project>) {
+    if (!project.value) return;
 
-    const index = projects.value.findIndex((p) => p.id === project.value?.id);
+    const response = await $fetch<Project>(`/api/projects/${projectId}`, {
+      method: "PUT",
+      body: {
+        ...updatedProject,
+      },
+    });
 
-    if (index === -1) return;
-
-    projects.value[index] = {
-      ...project.value,
-      ...updateProject,
-    };
-  };
+    // Merge with existing to update in our data store
+    projects.value = projects.value.map((p) =>
+      p.id === projectId ? { ...p, ...response } : p
+    );
+  }
 
   return {
     project,

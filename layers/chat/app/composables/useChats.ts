@@ -1,24 +1,72 @@
 export default function useChats() {
-  const chats = useState<Chat[]>("chats", () => [MOCK_CHAT]);
+  const chats = useState<Chat[]>("chats", () => []);
 
-  function createChat(options: { projectId?: string } = {}) {
-    const id = (chats.value.length + 1).toString();
-    const chat = {
-      id,
-      title: `Chat ${id}`,
-      messages: [],
-      projectId: options.projectId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  /**
+   * 1. $fetch (imperativo):
+   * - Faz uma requisição HTTP diretamente, sem reatividade ou integração com SSR.
+   * - Ideal para chamadas manuais em eventos, botões ou dentro de funções puras.
+   * - Não serializa dados para o cliente (sem hydration).
+   */
+  // const data = await $fetch<Chat[]>("/api/chats");
 
-    chats.value.push(chat);
+  /**
+   * 2. useAsyncData (SSR + hydration):
+   * - Executa no servidor e os dados são repassados ao cliente via hydration.
+   * - Reativo, com cache, deduplicação e suporte a revalidação.
+   * - Útil quando você quer mais controle sobre a chave e configuração do fetch.
+   */
+  // const {
+  //   data: chats,
+  //   status,
+  //   execute,
+  // } = useAsyncData<Chat[]>(
+  //   "chats",
+  //   () => {
+  //     console.log("fetch");
+  //     return $fetch("/api/chats");
+  //   },
+  //   {
+  //     immediate: false,
+  //     default: () => [],
+  //   }
+  // );
 
-    return chat;
+  /**
+   * 3. useFetch (recomendado para a maioria dos casos):
+   * - Wrapper de useAsyncData + $fetch com tipagem automática e sintaxe mais limpa.
+   * - Executa no servidor na primeira carga e envia os dados para o cliente via hydration.
+   * - Excelente para chamadas reativas e integradas com o ciclo de vida do Nuxt.
+   */
+  const { data, execute, status } = useFetch<Chat[]>("/api/chats", {
+    immediate: false,
+    key: "chats",
+    default: () => [],
+  });
+
+  async function fetchChats() {
+    if (status.value !== "idle") return;
+    await execute();
+    chats.value = data.value;
+  }
+
+  async function createChat(
+    options: { projectId?: string; title?: string } = {}
+  ) {
+    const newChat = await $fetch<Chat>("/api/chats", {
+      method: "POST",
+      body: {
+        title: options.title,
+        projectId: options.projectId,
+      },
+    });
+
+    chats.value.push(newChat);
+
+    return newChat;
   }
 
   async function createChatAndNavigate(options: { projectId?: string } = {}) {
-    const chat = createChat(options);
+    const chat = await createChat(options);
 
     if (chat.projectId) {
       await navigateTo(`/projects/${chat.projectId}/chats/${chat.id}`);
@@ -33,6 +81,7 @@ export default function useChats() {
 
   return {
     chats,
+    fetchChats,
     createChat,
     chatsInProject,
     createChatAndNavigate,
