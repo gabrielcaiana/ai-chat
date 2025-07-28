@@ -26,7 +26,6 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
     public: {
       appEnv: process.env.NUXT_PUBLIC_APP_ENV,
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
