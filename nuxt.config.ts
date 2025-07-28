@@ -4,6 +4,9 @@ import { fileURLToPath } from "url";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-20",
 
+  // Modules
+  modules: ["@nuxt/eslint"],
+
   // TypeScript enhancements
   typescript: {
     typeCheck: "build",
