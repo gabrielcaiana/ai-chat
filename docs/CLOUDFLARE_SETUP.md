@@ -38,31 +38,35 @@ NUXT_CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
 
 ## Configuração no Nuxt
 
-A configuração está implementada no `layers/chat/nuxt.config.ts` com fallback condicional:
+A configuração está implementada no `layers/chat/nuxt.config.ts`:
 
 ```typescript
-// Configuração condicional para Cloudflare KV em produção
-...(process.env.NUXT_CLOUDFLARE_ACCOUNT_ID && process.env.NUXT_CLOUDFLARE_API_TOKEN && process.env.NUXT_CLOUDFLARE_NAMESPACE_ID && {
-  $production: {
-    nitro: {
-      storage: {
-        db: {
-          driver: "cloudflare-kv-http",
-          name: "db",
-          accountId: process.env.NUXT_CLOUDFLARE_ACCOUNT_ID,
-          apiToken: process.env.NUXT_CLOUDFLARE_API_TOKEN,
-          namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
-        },
+$production: {
+  nitro: {
+    storage: {
+      db: {
+        driver: "cloudflare-kv-http",
+        name: "db",
+        accountId: process.env.NUXT_CLOUDFLARE_ACCOUNT_ID,
+        apiToken: process.env.NUXT_CLOUDFLARE_API_TOKEN,
+        namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
       },
     },
   },
-}),
+},
 ```
+
+## Script de Build Inteligente
+
+O projeto usa um script de build (`scripts/build.sh`) que verifica automaticamente se as variáveis do Cloudflare estão disponíveis:
+
+- **Se as variáveis existem**: Executa o build com Cloudflare KV
+- **Se as variáveis não existem**: Remove as variáveis e executa o build com storage local
 
 ## Comportamento
 
 - **Desenvolvimento**: Usa storage local (fs) em `./.data`
-- **Produção sem credenciais**: Usa storage local (fs) em `./.data`
+- **CI/CD sem credenciais**: Usa storage local (fs) em `./.data`
 - **Produção com credenciais**: Usa Cloudflare KV
 
 ## Uso no Código
@@ -85,28 +89,72 @@ await storage.removeItem("key");
 
 ## Configuração no CI/CD
 
-O arquivo `amplify.yml` já está configurado para incluir as variáveis de ambiente:
+### AWS Amplify
+
+O arquivo `amplify.yml` está configurado para:
+
+1. **Usar o script de build inteligente** que verifica as variáveis
+2. **Adicionar variáveis condicionalmente** no postBuild
 
 ```yaml
-- echo "NUXT_CLOUDFLARE_ACCOUNT_ID=$NUXT_CLOUDFLARE_ACCOUNT_ID" >> .amplify-hosting/compute/default/.env
-- echo "NUXT_CLOUDFLARE_NAMESPACE_ID=$NUXT_CLOUDFLARE_NAMESPACE_ID" >> .amplify-hosting/compute/default/.env
-- echo "NUXT_CLOUDFLARE_API_TOKEN=$NUXT_CLOUDFLARE_API_TOKEN" >> .amplify-hosting/compute/default/.env
+build:
+  commands:
+    - ./scripts/build.sh
+
+postBuild:
+  commands:
+    # Só adiciona as variáveis do Cloudflare se elas existirem
+    - |
+      if [ -n "$NUXT_CLOUDFLARE_ACCOUNT_ID" ] && [ -n "$NUXT_CLOUDFLARE_API_TOKEN" ] && [ -n "$NUXT_CLOUDFLARE_NAMESPACE_ID" ]; then
+        echo "NUXT_CLOUDFLARE_ACCOUNT_ID=$NUXT_CLOUDFLARE_ACCOUNT_ID" >> .amplify-hosting/compute/default/.env
+        echo "NUXT_CLOUDFLARE_NAMESPACE_ID=$NUXT_CLOUDFLARE_NAMESPACE_ID" >> .amplify-hosting/compute/default/.env
+        echo "NUXT_CLOUDFLARE_API_TOKEN=$NUXT_CLOUDFLARE_API_TOKEN" >> .amplify-hosting/compute/default/.env
+      fi
 ```
+
+### GitHub Actions
+
+O workflow `.github/workflows/ci.yml` está configurado para:
+
+1. **Usar o script de build inteligente**
+2. **Passar secrets opcionais** do Cloudflare
+
+```yaml
+- name: Build
+  run: ./scripts/build.sh
+  env:
+    CI: true
+    # Cloudflare KV variables (optional - script will handle if not set)
+    NUXT_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.NUXT_CLOUDFLARE_ACCOUNT_ID }}
+    NUXT_CLOUDFLARE_API_TOKEN: ${{ secrets.NUXT_CLOUDFLARE_API_TOKEN }}
+    NUXT_CLOUDFLARE_NAMESPACE_ID: ${{ secrets.NUXT_CLOUDFLARE_NAMESPACE_ID }}
+```
+
+### Configurando Secrets no GitHub
+
+Para usar Cloudflare KV no GitHub Actions:
+
+1. Vá para **Settings** > **Secrets and variables** > **Actions**
+2. Adicione os seguintes secrets:
+   - `NUXT_CLOUDFLARE_ACCOUNT_ID`
+   - `NUXT_CLOUDFLARE_API_TOKEN`
+   - `NUXT_CLOUDFLARE_NAMESPACE_ID`
+
+**Nota**: Se os secrets não estiverem configurados, o script automaticamente usará storage local.
 
 ## Segurança
 
 - **Nunca** commite as credenciais do Cloudflare no repositório
 - Use variáveis de ambiente em produção
 - Configure as permissões mínimas necessárias no API Token
-- O sistema tem fallback para storage local se as credenciais não estiverem disponíveis
+- O script de build garante fallback seguro para storage local
 
 ## Troubleshooting
 
 ### Erro "Missing required option `accountId`"
 
-- Verifique se as variáveis de ambiente estão definidas com o prefixo `NUXT_`
-- Confirme se o projeto está em modo de produção
-- Verifique se as variáveis estão sendo passadas corretamente no CI/CD
+- O script de build deve resolver isso automaticamente
+- Verifique se o script `scripts/build.sh` está executável (`chmod +x scripts/build.sh`)
 
 ### Erro de Autenticação
 
