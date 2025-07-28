@@ -4,6 +4,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     openaiApiKey: "",
+    public: {
+      appEnv: "",
+    },
   },
 
   nitro: {

@@ -4,8 +4,22 @@ export default defineNuxtConfig({
   css: ["./layers/base/app/assets/css/main.css"],
   mdc: {
     highlight: {
-      theme: "material-theme-palenight",
-      langs: ["html", "markdown", "vue", "typescript", "javascript"],
+      // https://shiki.matsu.io/themes
+      theme: "catppuccin-frappe",
+      langs: [
+        "js",
+        "jsx",
+        "json",
+        "ts",
+        "tsx",
+        "vue",
+        "css",
+        "html",
+        "bash",
+        "md",
+        "mdc",
+        "yaml",
+      ],
     },
   },
 });
