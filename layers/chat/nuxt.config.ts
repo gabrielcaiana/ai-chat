@@ -3,9 +3,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   runtimeConfig: {
-    openaiApiKey: "",
+    openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
     public: {
-      appEnv: "",
+      appEnv: process.env.NUXT_PUBLIC_APP_ENV,
     },
   },
 
