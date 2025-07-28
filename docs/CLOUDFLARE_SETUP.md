@@ -8,9 +8,9 @@ Adicione as seguintes variáveis ao seu arquivo `.env`:
 
 ```env
 # Cloudflare KV Store Configuration (Production only)
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
-CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
-CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
+NUXT_CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+NUXT_CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+NUXT_CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
 ```
 
 ## Como Obter as Credenciais
@@ -38,23 +38,32 @@ CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
 
 ## Configuração no Nuxt
 
-A configuração já está implementada no `nuxt.config.ts`:
+A configuração está implementada no `layers/chat/nuxt.config.ts` com fallback condicional:
 
 ```typescript
-$production: {
-  nitro: {
-    storage: {
-      db: {
-        driver: "cloudflare-kv-http",
-        name: "db",
-        accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
-        apiToken: process.env.CLOUDFLARE_API_TOKEN,
-        namespaceId: process.env.CLOUDFLARE_NAMESPACE_ID,
+// Configuração condicional para Cloudflare KV em produção
+...(process.env.NUXT_CLOUDFLARE_ACCOUNT_ID && process.env.NUXT_CLOUDFLARE_API_TOKEN && process.env.NUXT_CLOUDFLARE_NAMESPACE_ID && {
+  $production: {
+    nitro: {
+      storage: {
+        db: {
+          driver: "cloudflare-kv-http",
+          name: "db",
+          accountId: process.env.NUXT_CLOUDFLARE_ACCOUNT_ID,
+          apiToken: process.env.NUXT_CLOUDFLARE_API_TOKEN,
+          namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
+        },
       },
     },
   },
-}
+}),
 ```
+
+## Comportamento
+
+- **Desenvolvimento**: Usa storage local (fs) em `./.data`
+- **Produção sem credenciais**: Usa storage local (fs) em `./.data`
+- **Produção com credenciais**: Usa Cloudflare KV
 
 ## Uso no Código
 
@@ -62,16 +71,26 @@ Para acessar o storage no seu código:
 
 ```typescript
 // Em um composable ou server route
-const { $storage } = useNuxtApp();
+const storage = useStorage("db");
 
 // Armazenar dados
-await $storage.setItem("db:key", "value");
+await storage.setItem("key", "value");
 
 // Recuperar dados
-const value = await $storage.getItem("db:key");
+const value = await storage.getItem("key");
 
 // Deletar dados
-await $storage.removeItem("db:key");
+await storage.removeItem("key");
+```
+
+## Configuração no CI/CD
+
+O arquivo `amplify.yml` já está configurado para incluir as variáveis de ambiente:
+
+```yaml
+- echo "NUXT_CLOUDFLARE_ACCOUNT_ID=$NUXT_CLOUDFLARE_ACCOUNT_ID" >> .amplify-hosting/compute/default/.env
+- echo "NUXT_CLOUDFLARE_NAMESPACE_ID=$NUXT_CLOUDFLARE_NAMESPACE_ID" >> .amplify-hosting/compute/default/.env
+- echo "NUXT_CLOUDFLARE_API_TOKEN=$NUXT_CLOUDFLARE_API_TOKEN" >> .amplify-hosting/compute/default/.env
 ```
 
 ## Segurança
@@ -79,9 +98,15 @@ await $storage.removeItem("db:key");
 - **Nunca** commite as credenciais do Cloudflare no repositório
 - Use variáveis de ambiente em produção
 - Configure as permissões mínimas necessárias no API Token
-- Considere usar Cloudflare Workers para operações mais complexas
+- O sistema tem fallback para storage local se as credenciais não estiverem disponíveis
 
 ## Troubleshooting
+
+### Erro "Missing required option `accountId`"
+
+- Verifique se as variáveis de ambiente estão definidas com o prefixo `NUXT_`
+- Confirme se o projeto está em modo de produção
+- Verifique se as variáveis estão sendo passadas corretamente no CI/CD
 
 ### Erro de Autenticação
 

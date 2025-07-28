@@ -51,7 +51,7 @@ nuxt-chat/
 
 For detailed information about the server API and AI integration, see [Server API Documentation](server/README.md).
 
-For Cloudflare KV Store configuration, see [Cloudflare Setup Documentation](CLOUDFLARE_SETUP.md).
+For Cloudflare KV Store configuration, see [Cloudflare Setup Documentation](docs/CLOUDFLARE_SETUP.md).
 
 ## 🚀 Getting Started
 
@@ -100,9 +100,9 @@ NUXT_PUBLIC_BASE_URL=http://localhost:3000
 NUXT_OPENAI_API_KEY=your_openai_api_key  # Only required in production
 
 # Cloudflare KV Store Configuration (Production only)
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
-CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
-CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
+NUXT_CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+NUXT_CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+NUXT_CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
 ```
 
 ### Development

@@ -21,10 +21,9 @@ export default defineNuxtConfig({
         db: {
           driver: "cloudflare-kv-http",
           name: "db",
-          // Cloudflare KV configuration
           accountId: process.env.NUXT_CLOUDFLARE_ACCOUNT_ID,
-          namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
           apiToken: process.env.NUXT_CLOUDFLARE_API_TOKEN,
+          namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
         },
       },
     },
