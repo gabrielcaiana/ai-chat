@@ -4,11 +4,7 @@ import { fileURLToPath } from "url";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-20",
 
-  // Extend from layers
-  extends: ["./layers/base", "./layers/chat"],
-
-  // Modules - moved to main config to ensure proper loading
-  modules: ["@nuxt/eslint", "@nuxtjs/mdc", "@nuxt/ui"],
+  modules: ["@nuxt/eslint"],
 
   // TypeScript enhancements
   typescript: {
