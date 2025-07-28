@@ -42,7 +42,6 @@ A configuração está implementada no `layers/chat/nuxt.config.ts` com fallback
 
 ```typescript
 // Configuração condicional para Cloudflare KV em produção
-...(process.env.NUXT_CLOUDFLARE_ACCOUNT_ID && process.env.NUXT_CLOUDFLARE_API_TOKEN && process.env.NUXT_CLOUDFLARE_NAMESPACE_ID && {
   $production: {
     nitro: {
       storage: {
@@ -56,7 +55,6 @@ A configuração está implementada no `layers/chat/nuxt.config.ts` com fallback
       },
     },
   },
-}),
 ```
 
 ## Comportamento
