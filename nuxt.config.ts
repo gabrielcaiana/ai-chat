@@ -27,6 +27,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
+    // Cloudflare KV Authentication
+    cloudflareAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+    cloudflareApiToken: process.env.CLOUDFLARE_API_TOKEN,
+    cloudflareNamespaceId: process.env.CLOUDFLARE_NAMESPACE_ID,
     public: {
       appEnv: process.env.NUXT_PUBLIC_APP_ENV,
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
@@ -51,6 +55,30 @@ export default defineNuxtConfig({
         "mdc",
         "yaml",
       ],
+    },
+  },
+
+  nitro: {
+    storage: {
+      db: {
+        driver: "fs",
+        base: "./.data",
+      },
+    },
+  },
+
+  $production: {
+    nitro: {
+      storage: {
+        db: {
+          driver: "cloudflare-kv-http",
+          name: "db",
+          // Cloudflare KV configuration
+          accountId: process.env.NUXT_CLOUDFLARE_ACCOUNT_ID,
+          namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
+          apiToken: process.env.NUXT_CLOUDFLARE_API_TOKEN,
+        },
+      },
     },
   },
 });

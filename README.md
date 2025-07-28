@@ -29,6 +29,7 @@ A modern AI chat application built with Nuxt 4, Vue.js, and OpenAI integration. 
 - [@nuxtjs/mdc](https://mdc.nuxtjs.org/) - Material Design Components
 - [OpenAI SDK](https://platform.openai.com/) - Production AI Integration
 - [Ollama](https://ollama.ai/) - Development AI Integration
+- [Cloudflare KV](https://developers.cloudflare.com/workers/kv/) - Production Storage
 - [TypeScript](https://www.typescriptlang.org/) - Type Safety
 
 ## 📦 Project Structure
@@ -49,6 +50,8 @@ nuxt-chat/
 ```
 
 For detailed information about the server API and AI integration, see [Server API Documentation](server/README.md).
+
+For Cloudflare KV Store configuration, see [Cloudflare Setup Documentation](CLOUDFLARE_SETUP.md).
 
 ## 🚀 Getting Started
 
@@ -95,6 +98,11 @@ NUXT_PUBLIC_BASE_URL=http://localhost:3000
 
 # Production only
 NUXT_OPENAI_API_KEY=your_openai_api_key  # Only required in production
+
+# Cloudflare KV Store Configuration (Production only)
+CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
 ```
 
 ### Development
