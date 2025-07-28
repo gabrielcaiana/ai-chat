@@ -18,9 +18,6 @@ export default defineNuxtConfig({
     },
   },
 
-  // ...(process.env.NUXT_CLOUDFLARE_ACCOUNT_ID &&
-  //   process.env.NUXT_CLOUDFLARE_API_TOKEN &&
-  //   process.env.NUXT_CLOUDFLARE_NAMESPACE_ID && {
   $production: {
     nitro: {
       storage: {
