@@ -49,7 +49,7 @@ async function handleNewChat() {
 </script>
 
 <template>
-  <div class="container">
+  <div class="app-container">
     <div v-if="project" class="header">
       <div class="header-left">
         <div class="title-container">
@@ -113,7 +113,7 @@ async function handleNewChat() {
 </template>
 
 <style scoped>
-.container {
+.app-container {
   display: flex;
   flex-direction: column;
   padding: 1rem;
