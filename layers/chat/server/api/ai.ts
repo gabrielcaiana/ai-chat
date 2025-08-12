@@ -1,3 +1,4 @@
+import { ChatMessageSchema } from "../schema";
 import {
   generateChatResponse,
   createOllamaModel,
@@ -7,8 +8,19 @@ import {
 export default defineEventHandler(async (e) => {
   const appEnv = useRuntimeConfig().public.appEnv;
 
-  const body = await readBody(e);
-  const { messages } = body;
+  const { success, data } = await readValidatedBody(
+    e,
+    ChatMessageSchema.safeParse
+  );
+
+  if (!success) {
+    return 400;
+  }
+
+  const { messages } = data as {
+    messages: ChatMessage[];
+    chatId: string;
+  };
 
   const id = messages.length.toString();
 

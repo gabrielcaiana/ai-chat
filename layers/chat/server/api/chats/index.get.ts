@@ -1,7 +1,7 @@
 import { getAllChats } from "../../repository/chatRepository";
 
 export default defineCachedEventHandler(
-  async (_e) => {
+  async () => {
     const storage = useStorage("db");
     await storage.setItem("chats:has-new-chat", false);
     return getAllChats();
@@ -10,7 +10,7 @@ export default defineCachedEventHandler(
     name: "getAllChats",
     maxAge: 0,
     swr: true, // SWR is enabled by default
-    async shouldInvalidateCache(_e) {
+    async shouldInvalidateCache() {
       const storage = useStorage("db");
       const hasNewChat = await storage.getItem<boolean>("chats:has-new-chat");
       return hasNewChat ?? false;
