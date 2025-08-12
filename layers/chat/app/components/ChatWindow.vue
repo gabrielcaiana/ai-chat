@@ -75,6 +75,7 @@ watch(props.messages, pinToBottom, { deep: true });
   width: 100%;
   box-sizing: border-box;
   flex: 1 1 auto;
+  height: 100%;
   min-height: 0;
 }
 
