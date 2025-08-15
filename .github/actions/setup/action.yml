@@ -20,7 +20,6 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}.x
         cache: 'pnpm'
-        cache-dependency-path: '**/pnpm-lock.yaml'
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
