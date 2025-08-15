@@ -7,7 +7,7 @@ on:
     branches: ['master', 'main']
 
 env:
-  NODE_ENV: production
+  NODE_ENV: development
   CI: true
   FORCE_COLOR: true
   NUXT_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.NUXT_CLOUDFLARE_ACCOUNT_ID }}
@@ -15,62 +15,16 @@ env:
   NUXT_CLOUDFLARE_NAMESPACE_ID: ${{ secrets.NUXT_CLOUDFLARE_NAMESPACE_ID }}
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.key }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
-
-      - name: Generate cache key
-        id: cache-key
-        run: echo "key=${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ steps.cache-key.outputs.key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies
-        run: |
-          # Temporariamente remove NODE_ENV para instalação completa
-          unset NODE_ENV
-          pnpm install --frozen-lockfile --prefer-offline
-
-      - name: Generate Nuxt files
-        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
-
-      - name: Prepare husky (if exists)
-        run: |
-          if [ -f "package.json" ] && grep -q "husky" package.json; then
-            pnpm exec husky install || echo "Husky not configured, skipping..."
-          fi
-        continue-on-error: true
-
   lint:
     runs-on: ubuntu-latest
-    needs: [setup]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -78,38 +32,22 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            unset NODE_ENV
-            pnpm install --frozen-lockfile --prefer-offline
-          fi
-
-      - name: Generate Nuxt files
-        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Run linting
         run: pnpm lint
 
   type-check:
     runs-on: ubuntu-latest
-    needs: [setup]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -117,38 +55,22 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            unset NODE_ENV
-            pnpm install --frozen-lockfile --prefer-offline
-          fi
-
-      - name: Generate Nuxt files
-        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Run type checking
         run: pnpm type-check
 
   test:
     runs-on: ubuntu-latest
-    needs: [setup]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -156,38 +78,22 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            unset NODE_ENV
-            pnpm install --frozen-lockfile --prefer-offline
-          fi
-
-      - name: Generate Nuxt files
-        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Run tests
         run: pnpm test:run
 
   coverage:
     runs-on: ubuntu-latest
-    needs: [setup]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -195,36 +101,11 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            unset NODE_ENV
-            pnpm install --frozen-lockfile --prefer-offline
-          fi
-
-      - name: Generate Nuxt files
-        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Run tests with coverage
         run: pnpm test:coverage
-
-      - name: Cache coverage results
-        uses: actions/cache@v4
-        with:
-          path: coverage/
-          key: ${{ runner.os }}-coverage-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-coverage-
 
       - name: Upload coverage to artifacts
         uses: actions/upload-artifact@v4
@@ -235,13 +116,14 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    needs: [setup]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -249,41 +131,11 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            unset NODE_ENV
-            pnpm install --frozen-lockfile --prefer-offline
-          fi
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Install Playwright browsers
-        run: |
-          if command -v pnpm exec playwright &> /dev/null; then
-            pnpm exec playwright install --with-deps
-          elif [ -f "package.json" ] && grep -q "test:e2e:install" package.json; then
-            pnpm test:e2e:install
-          else
-            echo "Playwright not found, skipping browser installation"
-            exit 1
-          fi
+        run: pnpm test:e2e:install
 
       - name: Build application for E2E
         run: pnpm build
@@ -324,13 +176,14 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [setup]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -338,22 +191,8 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.pnpm
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            unset NODE_ENV
-            pnpm install --frozen-lockfile --prefer-offline
-          fi
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Build application
         run: pnpm build
