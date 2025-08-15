@@ -52,6 +52,9 @@ jobs:
           unset NODE_ENV
           pnpm install --frozen-lockfile --prefer-offline
 
+      - name: Generate Nuxt files
+        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+
       - name: Prepare husky (if exists)
         run: |
           if [ -f "package.json" ] && grep -q "husky" package.json; then
@@ -92,6 +95,9 @@ jobs:
             pnpm install --frozen-lockfile --prefer-offline
           fi
 
+      - name: Generate Nuxt files
+        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+
       - name: Run linting
         run: pnpm lint
 
@@ -127,6 +133,9 @@ jobs:
             unset NODE_ENV
             pnpm install --frozen-lockfile --prefer-offline
           fi
+
+      - name: Generate Nuxt files
+        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
 
       - name: Run type checking
         run: pnpm type-check
@@ -164,6 +173,9 @@ jobs:
             pnpm install --frozen-lockfile --prefer-offline
           fi
 
+      - name: Generate Nuxt files
+        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
+
       - name: Run tests
         run: pnpm test:run
 
@@ -199,6 +211,9 @@ jobs:
             unset NODE_ENV
             pnpm install --frozen-lockfile --prefer-offline
           fi
+
+      - name: Generate Nuxt files
+        run: pnpm dev --prepare || pnpm prepare || pnpm nuxt prepare || echo "No prepare command found"
 
       - name: Run tests with coverage
         run: pnpm test:coverage
