@@ -68,10 +68,12 @@ jobs:
         run: pnpm dev &
         env:
           CI: true
+
       - name: Wait for server
         run: npx wait-on http://localhost:3000
         env:
           CI: true
+
       - name: Run E2E tests
         run: pnpm test:e2e
         env:
@@ -95,7 +97,7 @@ jobs:
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}y
+          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
   quality-gate:
