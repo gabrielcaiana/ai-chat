@@ -2,7 +2,7 @@ import { updateChat } from "../../repository/chatRepository";
 import { UpdateChatSchema } from "../../schema";
 
 export default defineEventHandler(async (event) => {
-  const { id } = getRouterParams(event);
+  const { id } = getRouterParams(event) as { id: string };
 
   const { success, data } = await readValidatedBody(
     event,

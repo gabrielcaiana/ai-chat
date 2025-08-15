@@ -18,6 +18,12 @@ export default defineNuxtConfig({
     shared: fileURLToPath(new URL("./layers/chat/shared", import.meta.url)),
   },
 
+  routeRules: {
+    "/": {
+      prerender: true,
+    },
+  },
+
   // Performance optimizations
   experimental: {
     buildCache: true,
