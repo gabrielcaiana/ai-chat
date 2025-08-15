@@ -1,11 +1,11 @@
-import { vi } from "vitest";
-import { ref } from "vue";
+import { vi } from 'vitest';
+import { ref } from 'vue';
 
 // Mock Nuxt composables
-vi.mock("#app", () => ({
+vi.mock('#app', () => ({
   useRuntimeConfig: () => ({
     public: {
-      apiBase: "http://localhost:3000",
+      apiBase: 'http://localhost:3000',
     },
   }),
   useNuxtApp: () => ({
@@ -19,7 +19,7 @@ vi.mock("#app", () => ({
   useRoute: () => ({
     params: {},
     query: {},
-    path: "/",
+    path: '/',
   }),
   useRouter: () => ({
     push: vi.fn(),
@@ -28,52 +28,52 @@ vi.mock("#app", () => ({
     forward: vi.fn(),
   }),
   useAppConfig: () => ({
-    title: "AI Chat App",
+    title: 'AI Chat App',
   }),
-  useTemplateRef: (name: string) => ref(null),
+  useTemplateRef: (_name: string) => ref(null),
 }));
 
 // Mock Nuxt UI components
-vi.mock("#nuxt/ui", () => ({
+vi.mock('#nuxt/ui', () => ({
   UButton: {
-    name: "UButton",
-    template: "<button><slot /></button>",
+    name: 'UButton',
+    template: '<button><slot /></button>',
   },
   UInput: {
-    name: "UInput",
-    template: "<input />",
+    name: 'UInput',
+    template: '<input />',
   },
   UModal: {
-    name: "UModal",
-    template: "<div><slot /></div>",
+    name: 'UModal',
+    template: '<div><slot /></div>',
   },
   UCard: {
-    name: "UCard",
-    template: "<div><slot /></div>",
+    name: 'UCard',
+    template: '<div><slot /></div>',
   },
   UBadge: {
-    name: "UBadge",
-    template: "<span><slot /></span>",
+    name: 'UBadge',
+    template: '<span><slot /></span>',
   },
   UIcon: {
-    name: "UIcon",
-    template: "<span><slot /></span>",
+    name: 'UIcon',
+    template: '<span><slot /></span>',
   },
 }));
 
 // Mock MDC component
-vi.mock("@nuxtjs/mdc", () => ({
+vi.mock('@nuxtjs/mdc', () => ({
   default: {
-    name: "MDC",
+    name: 'MDC',
     template: '<div class="mdc-prose"><slot /></div>',
-    props: ["value"],
+    props: ['value'],
   },
 }));
 
 // Mock window.matchMedia
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
