@@ -6,95 +6,102 @@ on:
   pull_request:
     branches: ['master']
 
+env:
+  NODE_ENV: production
+  CI: true
+  NUXT_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.NUXT_CLOUDFLARE_ACCOUNT_ID }}
+  NUXT_CLOUDFLARE_API_TOKEN: ${{ secrets.NUXT_CLOUDFLARE_API_TOKEN }}
+  NUXT_CLOUDFLARE_NAMESPACE_ID: ${{ secrets.NUXT_CLOUDFLARE_NAMESPACE_ID }}
+
 jobs:
-  ci:
+  lint:
     runs-on: ubuntu-latest
-
-    env:
-      NODE_ENV: production
-      CI: true
-      NUXT_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.NUXT_CLOUDFLARE_ACCOUNT_ID }}
-      NUXT_CLOUDFLARE_API_TOKEN: ${{ secrets.NUXT_CLOUDFLARE_API_TOKEN }}
-      NUXT_CLOUDFLARE_NAMESPACE_ID: ${{ secrets.NUXT_CLOUDFLARE_NAMESPACE_ID }}
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Use Node.js 22.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
-
-      - name: Cache test results
-        uses: actions/cache@v4
-        with:
-          path: coverage/
-          key: ${{ runner.os }}-coverage-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-coverage-
-
+      - uses: ./.github/actions/setup
       - name: Linting
         run: pnpm lint
         env:
           CI: true
 
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
       - name: Type checking
         run: pnpm type-check
         env:
           CI: true
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
       - name: Run tests
         run: pnpm test:run
         env:
           CI: true
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
       - name: Run tests with coverage
         run: pnpm test:coverage
         env:
           CI: true
 
+  playwright-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
       - name: Install Playwright browsers
         run: pnpm test:e2e:install
         env:
           CI: true
 
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [playwright-install]
+    steps:
+      - uses: ./.github/actions/setup
       - name: Start development server
         run: pnpm dev &
         env:
           CI: true
-
       - name: Wait for server
         run: npx wait-on http://localhost:3000
         env:
           CI: true
-
       - name: Run E2E tests
         run: pnpm test:e2e
         env:
           CI: true
           BASE_URL: http://localhost:3000
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
       - name: Build application
         run: pnpm build
         env:
           CI: true
 
+  upload-coverage:
+    runs-on: ubuntu-latest
+    needs: [coverage]
+    steps:
+      - uses: ./.github/actions/setup
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}y
           fail_ci_if_error: false
 
+  quality-gate:
+    runs-on: ubuntu-latest
+    needs: [lint, type-check, test, coverage, e2e, build]
+    steps:
       - name: Quality Gate
         run: |
           echo "✅ All checks passed successfully!"
