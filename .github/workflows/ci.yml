@@ -32,7 +32,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: |
+          export NODE_ENV=
+          pnpm install --frozen-lockfile --prefer-offline
 
       - name: Cache test results
         uses: actions/cache@v4
