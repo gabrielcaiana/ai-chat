@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    branches: ["master"]
+    branches: ['master']
   pull_request:
-    branches: ["master"]
+    branches: ['master']
 
 jobs:
   ci:
@@ -30,10 +30,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Cache test results
+        uses: actions/cache@v4
+        with:
+          path: coverage/
+          key: ${{ runner.os }}-coverage-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-coverage-
 
       - name: Linting
         run: pnpm lint
@@ -44,3 +52,31 @@ jobs:
         run: pnpm type-check
         env:
           CI: true
+
+      - name: Run tests
+        run: pnpm test:run
+        env:
+          CI: true
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+        env:
+          CI: true
+
+      - name: Build application
+        run: pnpm build
+        env:
+          CI: true
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+      - name: Quality Gate
+        run: |
+          echo "✅ All checks passed successfully!"
+          echo "📊 Test coverage generated"
+          echo "🔍 Code quality validated"
+          echo "🏗️ Build completed successfully"

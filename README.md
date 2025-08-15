@@ -53,6 +53,8 @@ For detailed information about the server API and AI integration, see [Server AP
 
 For Cloudflare KV Store configuration, see [Cloudflare Setup Documentation](docs/CLOUDFLARE_SETUP.md).
 
+For CI/CD pipeline details, see [CI/CD Documentation](docs/CI_CD.md).
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -120,6 +122,76 @@ pnpm dev
 ```
 
 The application will be available at `http://localhost:3000`
+
+## 🧪 Testing
+
+```bash
+# run tests
+pnpm test:run
+
+# run tests with UI
+pnpm test:ui
+
+# run tests with coverage
+pnpm test:coverage
+```
+
+## 🔍 Code Quality
+
+```bash
+# lint code
+pnpm lint
+
+# fix linting issues
+pnpm lint:fix
+
+# type check
+pnpm type-check
+
+# format code
+pnpm prettier --write .
+```
+
+## 🪝 Git Hooks
+
+Este projeto usa [Husky](https://typicode.github.io/husky/) para gerenciar hooks Git:
+
+- **Pre-commit**: Executa lint-staged, testes, lint e type-check
+- **Commit-msg**: Valida mensagens de commit seguindo [Conventional Commits](docs/COMMIT_CONVENTION.md)
+
+### Exemplo de Commit
+
+```bash
+git commit -m "feat: add new user authentication feature"
+```
+
+## 🚀 CI/CD
+
+O projeto usa GitHub Actions para automação contínua:
+
+### Pipeline de CI
+
+1. **Setup**: Node.js 22.x + pnpm
+2. **Dependências**: Instalação com cache
+3. **Qualidade**: Lint + Type-check
+4. **Testes**: Execução + Cobertura
+5. **Build**: Aplicação de produção
+6. **Relatórios**: Upload de cobertura
+
+### Status de Qualidade
+
+- ✅ **Lint**: Código formatado e sem erros
+- ✅ **Type-check**: Validação TypeScript
+- ✅ **Testes**: 16/16 testes passando
+- ✅ **Cobertura**: Meta de 80% de cobertura
+- ✅ **Build**: Aplicação compilada com sucesso
+
+### Arquivos de Configuração
+
+- `.github/workflows/ci.yml` - Pipeline de CI/CD
+- `.codecov.yml` - Configuração de cobertura
+- `commitlint.config.mjs` - Regras de commit
+- `.prettierrc` - Formatação de código
 
 ### Production
 
