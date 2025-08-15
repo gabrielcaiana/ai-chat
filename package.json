@@ -26,7 +26,11 @@
     "nuxt:analyze": "npx nuxt analyze",
     "nuxt:cleanup": "npx nuxt cleanup",
     "nuxt:info": "npx nuxt info",
-    "nuxt:upgrade": "npx nuxt upgrade"
+    "nuxt:upgrade": "npx nuxt upgrade",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@ai-sdk/openai": "1.2.0",
@@ -45,7 +49,13 @@
   },
   "packageManager": "pnpm@8.10.0+sha512.9c2cb83f2b6cf6a25d8c58300bf99197c7ef3be84cf3e766f29054b40b83b42f8aaba6fcc314a9ecf27c00f7ce80a757bb4c608800e7adbe2d29dc5c7056f5be",
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^22.16.5",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/ui": "^3.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4",
     "vue-tsc": "^3.0.5"
   }
 }
