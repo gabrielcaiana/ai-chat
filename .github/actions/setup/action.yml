@@ -20,15 +20,12 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}.x
         cache: 'pnpm'
+        cache-dependency-path: '**/pnpm-lock.yaml'
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile --prefer-offline
+      run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
       shell: bash
-
-    - name: Cache test results
-      uses: actions/cache@v4
-      with:
-        path: coverage/
-        key: ${{ runner.os }}-coverage-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-coverage-
+      env:
+        NODE_ENV: development
+        CI: true
+        HUSKY: 0
