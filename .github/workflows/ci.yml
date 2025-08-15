@@ -63,6 +63,27 @@ jobs:
         env:
           CI: true
 
+      - name: Install Playwright browsers
+        run: pnpm test:e2e:install
+        env:
+          CI: true
+
+      - name: Start development server
+        run: pnpm dev &
+        env:
+          CI: true
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000
+        env:
+          CI: true
+
+      - name: Run E2E tests
+        run: pnpm test:e2e
+        env:
+          CI: true
+          BASE_URL: http://localhost:3000
+
       - name: Build application
         run: pnpm build
         env:

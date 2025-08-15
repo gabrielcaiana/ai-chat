@@ -20,3 +20,13 @@ logs
 
 # Local env files
 .env
+
+# Playwright test results
+test-results/
+playwright-report/
+playwright/.cache/
+
+# E2E test artifacts
+*.png
+*.mp4
+*.webm

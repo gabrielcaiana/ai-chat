@@ -1,6 +1,6 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
-import type { ComponentMountingOptions } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
+import { mount, type VueWrapper } from '@vue/test-utils';
+import type { ComponentMountingOptions } from '@vue/test-utils';
+import type { ComponentPublicInstance } from 'vue';
 
 // Helper function to mount components with common options
 export function mountComponent<T>(
@@ -11,16 +11,16 @@ export function mountComponent<T>(
     global: {
       stubs: {
         // Stub common Nuxt components
-        'NuxtLink': {
+        NuxtLink: {
           template: '<a><slot /></a>',
-          props: ['to']
+          props: ['to'],
         },
-        'NuxtPage': {
-          template: '<div><slot /></div>'
+        NuxtPage: {
+          template: '<div><slot /></div>',
         },
-        'NuxtLayout': {
-          template: '<div><slot /></div>'
-        }
+        NuxtLayout: {
+          template: '<div><slot /></div>',
+        },
       },
       mocks: {
         // Common mocks
@@ -28,18 +28,18 @@ export function mountComponent<T>(
         $route: {
           params: {},
           query: {},
-          path: '/'
+          path: '/',
         },
         $router: {
           push: vi.fn(),
           replace: vi.fn(),
           back: vi.fn(),
-          forward: vi.fn()
-        }
-      }
+          forward: vi.fn(),
+        },
+      },
     },
-    ...options
-  })
+    ...options,
+  });
 }
 
 // Helper to create mock data
@@ -49,16 +49,16 @@ export const createMockChat = (overrides = {}) => ({
   messages: [],
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  ...overrides
-})
+  ...overrides,
+});
 
 export const createMockMessage = (overrides = {}) => ({
   id: 'msg-1',
   content: 'Test message',
   role: 'user' as const,
   timestamp: new Date().toISOString(),
-  ...overrides
-})
+  ...overrides,
+});
 
 export const createMockProject = (overrides = {}) => ({
   id: 'project-1',
@@ -66,11 +66,11 @@ export const createMockProject = (overrides = {}) => ({
   description: 'Test project description',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  ...overrides
-})
+  ...overrides,
+});
 
 // Helper to wait for next tick
-export const nextTick = () => new Promise(resolve => setTimeout(resolve, 0))
+export const nextTick = () => new Promise(resolve => setTimeout(resolve, 0));
 
 // Helper to create a mock store
 export const createMockStore = (overrides = {}) => ({
@@ -80,8 +80,8 @@ export const createMockStore = (overrides = {}) => ({
   currentProject: null,
   isLoading: false,
   error: null,
-  ...overrides
-})
+  ...overrides,
+});
 
 // Helper to create a mock composable
 export const createMockComposable = (overrides = {}) => ({
@@ -89,5 +89,5 @@ export const createMockComposable = (overrides = {}) => ({
   loading: false,
   error: null,
   execute: vi.fn(),
-  ...overrides
-})
+  ...overrides,
+});

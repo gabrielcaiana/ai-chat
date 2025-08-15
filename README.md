@@ -125,6 +125,8 @@ The application will be available at `http://localhost:3000`
 
 ## 🧪 Testing
 
+### Unit Tests
+
 ```bash
 # run tests
 pnpm test:run
@@ -135,6 +137,27 @@ pnpm test:ui
 # run tests with coverage
 pnpm test:coverage
 ```
+
+### E2E Tests
+
+```bash
+# run E2E tests
+pnpm test:e2e
+
+# run E2E tests with UI
+pnpm test:e2e:ui
+
+# run E2E tests in headed mode
+pnpm test:e2e:headed
+
+# run E2E tests in debug mode
+pnpm test:e2e:debug
+
+# install Playwright browsers
+pnpm test:e2e:install
+```
+
+For detailed E2E testing information, see [E2E Testing Documentation](docs/E2E_TESTING.md).
 
 ## 🔍 Code Quality
 
@@ -174,15 +197,17 @@ O projeto usa GitHub Actions para automação contínua:
 1. **Setup**: Node.js 22.x + pnpm
 2. **Dependências**: Instalação com cache
 3. **Qualidade**: Lint + Type-check
-4. **Testes**: Execução + Cobertura
-5. **Build**: Aplicação de produção
-6. **Relatórios**: Upload de cobertura
+4. **Testes Unitários**: Execução + Cobertura
+5. **Testes E2E**: Playwright + Múltiplos navegadores
+6. **Build**: Aplicação de produção
+7. **Relatórios**: Upload de cobertura + Resultados E2E
 
 ### Status de Qualidade
 
 - ✅ **Lint**: Código formatado e sem erros
 - ✅ **Type-check**: Validação TypeScript
-- ✅ **Testes**: 16/16 testes passando
+- ✅ **Testes Unitários**: 16/16 testes passando
+- ✅ **Testes E2E**: Playwright configurado e funcional
 - ✅ **Cobertura**: Meta de 80% de cobertura
 - ✅ **Build**: Aplicação compilada com sucesso
 
@@ -192,6 +217,7 @@ O projeto usa GitHub Actions para automação contínua:
 - `.codecov.yml` - Configuração de cobertura
 - `commitlint.config.mjs` - Regras de commit
 - `.prettierrc` - Formatação de código
+- `playwright.config.ts` - Configuração de testes E2E
 
 ### Production
 

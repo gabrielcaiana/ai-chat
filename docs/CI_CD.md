@@ -35,24 +35,34 @@ O pipeline é executado automaticamente em:
 - Type-check: pnpm type-check
 ```
 
-#### 4. Testes
+#### 4. Testes Unitários
 
 ```yaml
 - Execução: pnpm test:run
 - Cobertura: pnpm test:coverage
 ```
 
-#### 5. Build
+#### 5. Testes E2E
+
+```yaml
+- Instalação navegadores: pnpm test:e2e:install
+- Servidor dev: pnpm dev
+- Aguarda servidor: wait-on http://localhost:3000
+- Execução: pnpm test:e2e
+```
+
+#### 6. Build
 
 ```yaml
 - Build de produção: pnpm build
 ```
 
-#### 6. Relatórios
+#### 7. Relatórios
 
 ```yaml
 - Upload de cobertura para Codecov
 - Status de qualidade
+- Resultados de testes E2E
 ```
 
 ## 📊 Métricas de Qualidade
@@ -61,14 +71,16 @@ O pipeline é executado automaticamente em:
 
 - **Meta**: 80% de cobertura
 - **Threshold**: 5% de variação permitida
-- **Status**: ✅ 16/16 testes passando
+- **Status Unitários**: ✅ 16/16 testes passando
+- **Status E2E**: ✅ Playwright configurado e funcional
 
 ### Validações
 
 - ✅ **ESLint**: Código sem erros de lint
 - ✅ **TypeScript**: Validação de tipos
 - ✅ **Prettier**: Formatação consistente
-- ✅ **Testes**: Todos os testes passando
+- ✅ **Testes Unitários**: Todos os testes passando
+- ✅ **Testes E2E**: Playwright configurado e funcional
 - ✅ **Build**: Aplicação compilada
 
 ## 🔧 Configurações
@@ -79,6 +91,7 @@ O pipeline é executado automaticamente em:
 - **Runtime**: Ubuntu Latest
 - **Node.js**: 22.x
 - **Package Manager**: pnpm 8
+- **Testes E2E**: Playwright + Múltiplos navegadores
 
 ### Codecov
 
@@ -91,6 +104,7 @@ O pipeline é executado automaticamente em:
 
 - **Dependências**: pnpm store
 - **Cobertura**: coverage/
+- **Testes E2E**: test-results/
 - **Chave**: Baseada em pnpm-lock.yaml
 
 ## 🚨 Falhas e Soluções
@@ -174,3 +188,5 @@ pnpm build
 - [Codecov](https://docs.codecov.io/)
 - [pnpm](https://pnpm.io/)
 - [Vitest](https://vitest.dev/)
+- [Playwright](https://playwright.dev/)
+- [E2E Testing Documentation](docs/E2E_TESTING.md)

@@ -1,14 +1,14 @@
-import { defineConfig } from 'vitest/config'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import { defineConfig } from 'vitest/config';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [vue()],
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./test/setup.ts'],
-    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    setupFiles: ['./tests/unit/setup.ts'],
+    include: ['tests/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.nuxt', '.output'],
     coverage: {
       provider: 'v8',
@@ -21,9 +21,9 @@ export default defineConfig({
         'test/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/types/**'
-      ]
-    }
+        '**/types/**',
+      ],
+    },
   },
   resolve: {
     alias: {
@@ -31,7 +31,7 @@ export default defineConfig({
       '~': resolve(__dirname, './'),
       '~~': resolve(__dirname, './'),
       '@@': resolve(__dirname, './'),
-      '##': resolve(__dirname, './')
-    }
-  }
-})
+      '##': resolve(__dirname, './'),
+    },
+  },
+});
