@@ -31,7 +31,8 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
       - run: pnpm lint
 
   type-check:
@@ -46,7 +47,8 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
       - run: pnpm type-check
 
   # ========================================
@@ -65,7 +67,8 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
       - run: pnpm test:run
 
   coverage:
@@ -80,7 +83,8 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
       - run: pnpm test:coverage
       - uses: actions/upload-artifact@v4
         with:
@@ -100,7 +104,8 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
       - run: pnpm test:e2e:install
       - run: pnpm build
       - name: Start Preview Server
@@ -146,7 +151,8 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
       - run: pnpm build
       - uses: actions/upload-artifact@v4
         with:

@@ -18,7 +18,7 @@ export default defineConfig({
         'dist/',
         '.nuxt/',
         '.output/',
-        'test/',
+        'tests/',
         '**/*.d.ts',
         '**/*.config.*',
         '**/types/**',

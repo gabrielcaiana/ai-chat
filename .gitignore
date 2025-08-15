@@ -30,3 +30,6 @@ playwright/.cache/
 *.png
 *.mp4
 *.webm
+
+# Vitest
+coverage/
