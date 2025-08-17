@@ -10,16 +10,6 @@ test.describe('Home Page', () => {
     await helpers.waitForPageLoad();
   });
 
-  // test('should display the main page elements', async ({ page }) => {
-  //   // Verificar se há conteúdo na página
-  //   const bodyText = await page.textContent('body');
-  //   expect(bodyText).toBeTruthy();
-  //   expect(bodyText!.length).toBeGreaterThan(100);
-
-  //   // Verificar se há botões de ação
-  //   await helpers.expectElementVisible('button');
-  // });
-
   test('should have proper page structure', async ({ page }) => {
     // Verificar se há seções principais
     await helpers.expectElementVisible('.landing-page');

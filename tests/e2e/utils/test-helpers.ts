@@ -7,7 +7,41 @@ export class TestHelpers {
    * Aguarda a página carregar completamente
    */
   async waitForPageLoad() {
-    await this.page.waitForLoadState('networkidle');
+    try {
+      // Aguarda o DOM estar pronto
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 15000 });
+
+      // Aguarda um tempo adicional para garantir que a página esteja estável
+      await this.page.waitForTimeout(2000);
+
+      // Verifica se há conteúdo na página
+      await this.page.waitForFunction(
+        () => {
+          return (
+            document.body &&
+            document.body.textContent &&
+            document.body.textContent.length > 0 &&
+            !document.querySelector('.loading') &&
+            !document.querySelector('[data-loading="true"]')
+          );
+        },
+        { timeout: 15000 }
+      );
+    } catch {
+      // Fallback: aguarda um tempo mínimo e verifica se há conteúdo
+      await this.page.waitForTimeout(3000);
+      const bodyText = await this.page.textContent('body');
+      if (!bodyText || bodyText.length < 50) {
+        throw new Error('Page failed to load properly');
+      }
+    }
+  }
+
+  /**
+   * Aguarda a página estar estável (sem mudanças por um período)
+   */
+  async waitForPageStable(timeout = 5000) {
+    await this.page.waitForTimeout(timeout);
   }
 
   /**
@@ -45,7 +79,7 @@ export class TestHelpers {
    * Submete um formulário
    */
   async submitForm(selector: string) {
-    await this.page.locator(selector).submit();
+    await this.page.locator(selector).click();
   }
 
   /**

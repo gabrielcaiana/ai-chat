@@ -1,12 +1,17 @@
 import { test, expect } from '@playwright/test';
+import { createTestHelpers } from './utils/test-helpers';
 
 test.describe('Basic Page Loading', () => {
+  let helpers: ReturnType<typeof createTestHelpers>;
+
+  test.beforeEach(async ({ page }) => {
+    helpers = createTestHelpers(page);
+  });
+
   test('should load the page successfully', async ({ page }) => {
     // Navegar para a página
     await page.goto('/');
-
-    // Aguardar a página carregar
-    await page.waitForLoadState('networkidle');
+    await helpers.waitForPageLoad();
 
     // Verificar se a página carregou
     expect(page.url()).toContain('localhost:3000');
@@ -27,7 +32,7 @@ test.describe('Basic Page Loading', () => {
 
   test('should have basic page structure', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await helpers.waitForPageLoad();
 
     // Verificar se há elementos básicos
     await expect(page.locator('html')).toBeVisible();
@@ -41,7 +46,7 @@ test.describe('Basic Page Loading', () => {
 
   test('should handle page interactions', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await helpers.waitForPageLoad();
 
     // Verificar se não há erros críticos no console
     const consoleErrors: string[] = [];

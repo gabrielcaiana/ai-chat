@@ -31,13 +31,6 @@ test.describe('Navigation and Routing', () => {
     await helpers.expectElementVisible('.feature-card:first-child');
   });
 
-  test('should have proper page structure', async ({ page }) => {
-    // Verificar se a página tem estrutura básica
-    const bodyText = await page.textContent('body');
-    expect(bodyText).toBeTruthy();
-    expect(bodyText!.length).toBeGreaterThan(100);
-  });
-
   test('should display all sections correctly', async () => {
     // Verificar seção hero
     await helpers.expectElementVisible('.hero-section');

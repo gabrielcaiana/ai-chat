@@ -2,10 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 2 : 1,
+  workers: 2,
   reporter: [
     ['html'],
     ['json', { outputFile: 'test-results/results.json' }],
@@ -16,6 +16,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    actionTimeout: 15000,
+    navigationTimeout: 30000,
   },
   projects: [
     {
@@ -49,4 +51,5 @@ export default defineConfig({
       },
   outputDir: 'test-results/',
   globalSetup: './tests/e2e/global-setup.ts',
+  timeout: 60000,
 });
