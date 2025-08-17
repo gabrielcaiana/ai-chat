@@ -1,7 +1,7 @@
-import { updateChat } from "../../repository/chatRepository";
-import { UpdateChatSchema } from "../../schema";
+import { updateChat } from '../../repository/chatRepository';
+import { UpdateChatSchema } from '../../schema';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const { id } = getRouterParams(event) as { id: string };
 
   const { success, data } = await readValidatedBody(
@@ -10,11 +10,14 @@ export default defineEventHandler(async (event) => {
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+    });
   }
 
-  const storage = useStorage("db");
-  await storage.setItem("chats:has-new-chat", true);
+  const storage = useStorage('db');
+  await storage.setItem('chats:has-new-chat', true);
 
   return updateChat(id, data);
 });

@@ -1,10 +1,10 @@
 import {
   updateProject,
   getProjectById,
-} from "../../repository/projectRepository";
-import { UpdateProjectSchema } from "../../schema";
+} from '../../repository/projectRepository';
+import { UpdateProjectSchema } from '../../schema';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const { id } = getRouterParams(event);
   const project = await getProjectById(id as string);
   if (!project) return null;
@@ -15,7 +15,10 @@ export default defineEventHandler(async (event) => {
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Project Not Found',
+    });
   }
 
   const { name } = data;
