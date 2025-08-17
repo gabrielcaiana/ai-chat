@@ -10,18 +10,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // Configuração para ambiente serverless (Amplify)
-    preset: 'node-server',
     storage: {
       db: {
         driver: 'fs',
         base: './.data',
       },
     },
-    ...(process.env.NODE_ENV === 'production' && {
-      minify: true,
-      compressPublicAssets: true,
-    }),
   },
 
   $production: {
