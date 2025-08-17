@@ -27,6 +27,5 @@ export default defineConfig({
     },
   ],
   outputDir: 'test-results/',
-  globalSetup: './tests/e2e/global-setup.ts',
-  timeout: 60000, // 1 minuto no CI (mais rápido)
+  timeout: 60000,
 });

@@ -38,7 +38,6 @@
     "test:e2e:install": "playwright install",
     "test:e2e:codegen": "playwright codegen",
     "test:e2e:ci": "playwright test --config=playwright.config.ci.ts",
-    "test:e2e:compatibility": "playwright test --config=playwright.config.compatibility.ts",
     "prepare": "husky",
     "pre-commit": "lint-staged"
   },
