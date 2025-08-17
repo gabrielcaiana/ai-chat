@@ -105,6 +105,9 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm nuxt prepare
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
