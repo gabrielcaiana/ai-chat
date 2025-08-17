@@ -1,14 +1,14 @@
 import {
   getMessagesByChatId,
   createMessageForChat,
-} from "../../../../repository/chatRepository";
+} from '../../../../repository/chatRepository';
 import {
   createOpenAIModel,
   streamChatResponse,
-} from "../../../../services/ai-service";
+} from '../../../../services/ai-service';
 
-export default defineEventHandler(async (event) => {
-  const { id } = getRouterParams(event);
+export default defineEventHandler(async event => {
+  const { id } = getRouterParams(event) as { id: string };
 
   const history = await getMessagesByChatId(id);
 
@@ -16,12 +16,12 @@ export default defineEventHandler(async (event) => {
   const stream = await streamChatResponse(openai, history);
 
   setResponseHeaders(event, {
-    "Content-Type": "text/html",
-    "Cache-Control": "no-cache",
-    "Transfer-Encoding": "chunked",
+    'Content-Type': 'text/html',
+    'Cache-Control': 'no-cache',
+    'Transfer-Encoding': 'chunked',
   });
 
-  let completeResponse = "";
+  let completeResponse = '';
 
   const transformStream = new TransformStream({
     transform(chunk, controller) {
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
       await createMessageForChat({
         chatId: id,
         content: completeResponse,
-        role: "assistant",
+        role: 'assistant',
       });
     },
   });
