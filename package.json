@@ -26,7 +26,20 @@
     "nuxt:analyze": "npx nuxt analyze",
     "nuxt:cleanup": "npx nuxt cleanup",
     "nuxt:info": "npx nuxt info",
-    "nuxt:upgrade": "npx nuxt upgrade"
+    "nuxt:upgrade": "npx nuxt upgrade",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:install": "playwright install",
+    "test:e2e:codegen": "playwright codegen",
+    "test:e2e:ci": "playwright test --config=playwright.config.ci.ts",
+    "prepare": "husky",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@ai-sdk/openai": "1.2.0",
@@ -45,7 +58,30 @@
   },
   "packageManager": "pnpm@8.10.0+sha512.9c2cb83f2b6cf6a25d8c58300bf99197c7ef3be84cf3e766f29054b40b83b42f8aaba6fcc314a9ecf27c00f7ce80a757bb4c608800e7adbe2d29dc5c7056f5be",
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@playwright/test": "^1.54.2",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^22.16.5",
-    "vue-tsc": "^3.0.5"
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.0.5",
+    "wait-on": "^8.0.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }
