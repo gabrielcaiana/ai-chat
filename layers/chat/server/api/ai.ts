@@ -1,11 +1,11 @@
-import { ChatMessageSchema } from "../schema";
+import { ChatMessageSchema } from '../schema';
 import {
   generateChatResponse,
   createOllamaModel,
   createOpenAIModel,
-} from "../services/ai-service";
+} from '../services/ai-service';
 
-export default defineEventHandler(async (e) => {
+export default defineEventHandler(async e => {
   const appEnv = useRuntimeConfig().public.appEnv;
 
   const { success, data } = await readValidatedBody(
@@ -14,7 +14,10 @@ export default defineEventHandler(async (e) => {
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+    });
   }
 
   const { messages } = data as {
@@ -32,7 +35,7 @@ export default defineEventHandler(async (e) => {
   const ollamaModel = createOllamaModel();
 
   // define o modelo a ser utilizado de acordo com o ambiente
-  const model = appEnv === "development" ? ollamaModel : openaiModel;
+  const model = appEnv === 'development' ? ollamaModel : openaiModel;
 
   // gera a resposta para a mensagem
   const response = await generateChatResponse({
@@ -42,7 +45,7 @@ export default defineEventHandler(async (e) => {
 
   return {
     id,
-    role: "assistant",
+    role: 'assistant',
     content: response,
   };
 });

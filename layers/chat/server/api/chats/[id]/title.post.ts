@@ -1,12 +1,12 @@
 import {
   createOpenAIModel,
   generateChatTitle,
-} from "../../../services/ai-service";
+} from '../../../services/ai-service';
 
-import { updateChat } from "../../../repository/chatRepository";
-import { UpdateChatTitleSchema } from "../../../schema";
+import { updateChat } from '../../../repository/chatRepository';
+import { UpdateChatTitleSchema } from '../../../schema';
 
-export default defineEventHandler(async (e) => {
+export default defineEventHandler(async e => {
   const { id } = getRouterParams(e);
 
   const { success, data } = await readValidatedBody(
@@ -15,7 +15,10 @@ export default defineEventHandler(async (e) => {
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+    });
   }
 
   const { message } = data;

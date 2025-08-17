@@ -1,7 +1,7 @@
-import { CreateMessageSchema } from "~~/layers/chat/server/schema";
-import { createMessageForChat } from "../../../../repository/chatRepository";
+import { CreateMessageSchema } from '~~/layers/chat/server/schema';
+import { createMessageForChat } from '../../../../repository/chatRepository';
 
-export default defineEventHandler(async (e) => {
+export default defineEventHandler(async e => {
   const { id } = getRouterParams(e);
 
   const { success, data } = await readValidatedBody(
@@ -10,7 +10,10 @@ export default defineEventHandler(async (e) => {
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+    });
   }
 
   const { content, role } = data;

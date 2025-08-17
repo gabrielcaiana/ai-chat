@@ -1,14 +1,17 @@
-import { createProject } from "../../repository/projectRepository";
-import { CreateProjectSchema } from "../../schema";
+import { createProject } from '../../repository/projectRepository';
+import { CreateProjectSchema } from '../../schema';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const { success, data } = await readValidatedBody(
     event,
     CreateProjectSchema.safeParse
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+    });
   }
 
   const { name } = data;

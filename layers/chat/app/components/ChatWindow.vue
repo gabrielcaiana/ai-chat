@@ -1,32 +1,32 @@
 <script setup lang="ts">
-const { showScrollButton, scrollToBottom, pinToBottom } = useChatScroll();
+  const { showScrollButton, scrollToBottom, pinToBottom } = useChatScroll();
 
-const props = defineProps<{
-  messages: ChatMessage[];
-  chat: Chat;
-  typing: boolean;
-}>();
+  const props = defineProps<{
+    messages: ChatMessage[];
+    chat: Chat;
+    typing: boolean;
+  }>();
 
-const emit = defineEmits(["send-message"]);
+  const emit = defineEmits(['send-message']);
 
-function handleSendMessage(message: string) {
-  emit("send-message", message);
-}
+  function handleSendMessage(message: string) {
+    emit('send-message', message);
+  }
 
-watch(props.messages, pinToBottom, { deep: true });
+  watch(props.messages, pinToBottom, { deep: true });
 
-const route = useRoute();
-const isOnProjectPage = computed(() => !!route.params.projectId);
+  const route = useRoute();
+  const isOnProjectPage = computed(() => !!route.params.projectId);
 
-const isAssignModalOpen = ref(false);
+  const isAssignModalOpen = ref(false);
 
-function openAssignModal() {
-  isAssignModalOpen.value = true;
-}
+  function openAssignModal() {
+    isAssignModalOpen.value = true;
+  }
 
-function closeAssignModal() {
-  isAssignModalOpen.value = false;
-}
+  function closeAssignModal() {
+    isAssignModalOpen.value = false;
+  }
 </script>
 
 <template>
@@ -98,141 +98,141 @@ function closeAssignModal() {
 </template>
 
 <style scoped>
-/* ===== Layout & Container Styles ===== */
-.scroll-container {
-  overflow-y: auto;
-  width: 100%;
-  box-sizing: border-box;
-  flex: 1 1 auto;
-  height: 100%;
-  min-height: 0;
-}
+  /* ===== Layout & Container Styles ===== */
+  .scroll-container {
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+  }
 
-.chat-container {
-  max-width: 800px;
-  height: 100%;
-}
+  .chat-container {
+    max-width: 800px;
+    height: 100%;
+  }
 
-/* ===== Header Styles ===== */
-.chat-header {
-  margin-bottom: 1.5rem;
-  padding: 1rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  /* ===== Header Styles ===== */
+  .chat-header {
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--ui-text);
-}
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ui-text);
+  }
 
-/* ===== Messages Container ===== */
-.messages-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  overflow-y: auto;
-  padding-bottom: 8rem;
-}
+  /* ===== Messages Container ===== */
+  .messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    overflow-y: auto;
+    padding-bottom: 8rem;
+  }
 
-/* ===== Message Styles ===== */
-.message {
-  padding: 1rem;
-  border-radius: var(--ui-radius);
-  transition: all 0.2s;
-}
+  /* ===== Message Styles ===== */
+  .message {
+    padding: 1rem;
+    border-radius: var(--ui-radius);
+    transition: all 0.2s;
+  }
 
-.message-user {
-  background-color: var(--ui-bg-muted);
-  border: 1px solid var(--ui-border);
-  width: 70%;
-  align-self: flex-end;
-}
+  .message-user {
+    background-color: var(--ui-bg-muted);
+    border: 1px solid var(--ui-border);
+    width: 70%;
+    align-self: flex-end;
+  }
 
-.message-ai {
-  width: 100%;
-  padding: 1rem 0;
-  border: none;
-  background: none;
-}
+  .message-ai {
+    width: 100%;
+    padding: 1rem 0;
+    border: none;
+    background: none;
+  }
 
-.message-content {
-  color: var(--ui-text);
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-}
+  .message-content {
+    color: var(--ui-text);
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
 
-/* ===== Input Form Styles ===== */
-.message-form-container {
-  position: fixed;
-  bottom: 1.5rem;
-  max-width: 800px;
-  width: calc(100% - 3rem); /* Account for container padding */
-  z-index: 10;
-}
+  /* ===== Input Form Styles ===== */
+  .message-form-container {
+    position: fixed;
+    bottom: 1.5rem;
+    max-width: 800px;
+    width: calc(100% - 3rem); /* Account for container padding */
+    z-index: 10;
+  }
 
-.scroll-to-bottom-button-container {
-  position: absolute;
-  bottom: calc(100% + 1rem);
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
+  .scroll-to-bottom-button-container {
+    position: absolute;
+    bottom: calc(100% + 1rem);
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
 
-.scroll-to-bottom-button-container :deep(button) {
-  pointer-events: auto;
-}
+  .scroll-to-bottom-button-container :deep(button) {
+    pointer-events: auto;
+  }
 
-/* ===== Empty State Styles ===== */
-.empty-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  min-height: 100%;
-}
+  /* ===== Empty State Styles ===== */
+  .empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 100%;
+  }
 
-.empty-state-card {
-  background-color: var(--ui-bg-elevated);
-  padding: 2rem;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
+  .empty-state-card {
+    background-color: var(--ui-bg-elevated);
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-.empty-state-title {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--ui-text-muted);
-  text-align: center;
-}
+  .empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--ui-text-muted);
+    text-align: center;
+  }
 
-.empty-state-message {
-  font-size: 1rem;
-  color: var(--ui-text-muted);
-}
+  .empty-state-message {
+    font-size: 1rem;
+    color: var(--ui-text-muted);
+  }
 
-/* ===== Utility Styles ===== */
-/* Hide scrollbar across browsers */
-.message-input {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
+  /* ===== Utility Styles ===== */
+  /* Hide scrollbar across browsers */
+  .message-input {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 
-.message-input::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
+  .message-input::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 
-.typing-indicator {
-  display: inline-block;
-  animation: pulse 1s infinite;
-  margin-left: 0.25rem;
-}
+  .typing-indicator {
+    display: inline-block;
+    animation: pulse 1s infinite;
+    margin-left: 0.25rem;
+  }
 </style>
