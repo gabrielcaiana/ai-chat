@@ -10,20 +10,26 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Configuração para ambiente serverless (Amplify)
+    preset: 'node-server',
     storage: {
       db: {
-        driver: "fs",
-        base: "./.data",
+        driver: 'fs',
+        base: './.data',
       },
     },
+    ...(process.env.NODE_ENV === 'production' && {
+      minify: true,
+      compressPublicAssets: true,
+    }),
   },
 
   $production: {
     nitro: {
       storage: {
         db: {
-          driver: "cloudflare-kv-http",
-          name: "db",
+          driver: 'cloudflare-kv-http',
+          name: 'db',
           accountId: process.env.NUXT_CLOUDFLARE_ACCOUNT_ID,
           apiToken: process.env.NUXT_CLOUDFLARE_API_TOKEN,
           namespaceId: process.env.NUXT_CLOUDFLARE_NAMESPACE_ID,
