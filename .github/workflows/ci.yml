@@ -104,6 +104,33 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
+
+      # Instalar dependências do sistema necessárias para navegadores
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-4-1 \
+            libgraphene-1.0-0 \
+            libwoff1 \
+            libvpx7 \
+            libevent-2.1-7 \
+            libopus0 \
+            libgstreamer1.0-0 \
+            libgstreamer-plugins-base1.0-0 \
+            libgstreamer-plugins-bad1.0-0 \
+            libgstreamer-gl1.0-0 \
+            libgstreamer-plugins-base1.0-0 \
+            libgstreamer-plugins-bad1.0-0 \
+            libflite1 \
+            libavif13 \
+            libharfbuzz-icu0 \
+            libsecret-1-0 \
+            libhyphen0 \
+            libmanette-0.2-0 \
+            libgles2-mesa \
+            libx264-163
+
       - run: pnpm install --frozen-lockfile --prefer-offline
       - run: pnpm nuxt prepare
       - run: pnpm test:e2e:install
@@ -116,7 +143,7 @@ jobs:
           PORT: 3000
       - name: Wait for Server
         run: npx wait-on http://localhost:3000 --timeout 60000
-      - run: pnpm test:e2e
+      - run: pnpm test:e2e:ci
         env:
           BASE_URL: http://localhost:3000
       - name: Cleanup Server

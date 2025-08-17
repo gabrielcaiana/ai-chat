@@ -2,24 +2,25 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  fullyParallel: false,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1,
-  workers: process.env.CI ? 1 : 2, // 1 worker no CI para evitar conflitos
+  fullyParallel: true, // Paralelo para compatibilidade
+  forbidOnly: false, // Permite only() para testes específicos
+  retries: 1,
+  workers: 3, // Mais workers para compatibilidade
   reporter: [
     ['html'],
-    ['json', { outputFile: 'test-results/results.json' }],
-    ['junit', { outputFile: 'test-results/results.xml' }],
+    ['json', { outputFile: 'test-results/compatibility-results.json' }],
+    ['junit', { outputFile: 'test-results/compatibility-results.xml' }],
   ],
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: process.env.CI ? 30000 : 15000, // Timeout maior no CI
-    navigationTimeout: process.env.CI ? 60000 : 30000, // Timeout maior no CI
+    actionTimeout: 15000,
+    navigationTimeout: 30000,
   },
   projects: [
+    // Todos os navegadores para compatibilidade completa
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -41,15 +42,7 @@ export default defineConfig({
       use: { ...devices['iPhone 12'] },
     },
   ],
-  webServer: process.env.CI
-    ? undefined
-    : {
-        command: 'pnpm dev',
-        url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI,
-        timeout: 120 * 1000,
-      },
   outputDir: 'test-results/',
   globalSetup: './tests/e2e/global-setup.ts',
-  timeout: process.env.CI ? 120000 : 60000, // Timeout global maior no CI
+  timeout: 60000,
 });
