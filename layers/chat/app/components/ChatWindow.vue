@@ -2,7 +2,7 @@
   const { showScrollButton, scrollToBottom, pinToBottom } = useChatScroll();
 
   const props = defineProps<{
-    messages: ChatMessage[];
+    messages: Message[];
     chat: Chat;
     typing: boolean;
   }>();
@@ -66,7 +66,10 @@
             }"
           >
             <div class="message-content">
-              <MarkdownRenderer :content="message.content" />
+              <MarkdownRenderer
+                :content="message.content"
+                :cache-key="message.id"
+              />
             </div>
           </div>
 
