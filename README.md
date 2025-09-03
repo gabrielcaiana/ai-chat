@@ -105,6 +105,8 @@ NUXT_OPENAI_API_KEY=your_openai_api_key  # Only required in production
 NUXT_CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
 NUXT_CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
 NUXT_CLOUDFLARE_NAMESPACE_ID=your_cloudflare_namespace_id
+DATABASE_URL=
+DIRECT_URL=
 ```
 
 ### Development
