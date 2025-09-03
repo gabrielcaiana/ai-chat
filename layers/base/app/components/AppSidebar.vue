@@ -1,92 +1,92 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from "@nuxt/ui";
+  import type { NavigationMenuItem } from '@nuxt/ui';
 
-defineProps<{
-  isOpen: boolean;
-}>();
+  defineProps<{
+    isOpen: boolean;
+  }>();
 
-const route = useRoute();
-const { projects, createProject } = useProjects();
-const { chats, chatsInProject, createChatAndNavigate } = useChats();
+  const route = useRoute();
+  const { projects, createProject } = useProjects();
+  const { chats, chatsInProject, createChatAndNavigate } = useChats();
 
-function isCurrentProject(projectId: string): boolean {
-  return route.params.projectId === projectId;
-}
-const chatsInCurrentProject = computed(() =>
-  chatsInProject(route.params.projectId as string)
-);
+  function isCurrentProject(projectId: string): boolean {
+    return route.params.projectId === projectId;
+  }
+  const chatsInCurrentProject = computed(() =>
+    chatsInProject(route.params.projectId as string)
+  );
 
-function formatProjectChat(project: Project, chat: Chat): NavigationMenuItem {
-  return {
-    label: chat.title || "Untitled Chat",
-    to: `/projects/${project.id}/chats/${chat.id}`,
-    active: route.params.id === chat.id,
-  };
-}
-
-function formatProjectItem(project: Project): NavigationMenuItem {
-  const isCurrent = isCurrentProject(project.id);
-
-  const baseItem: NavigationMenuItem = {
-    label: project.name,
-    to: `/projects/${project.id}`,
-    active: isCurrent,
-    defaultOpen: isCurrent,
-  };
-
-  if (isCurrent) {
+  function formatProjectChat(project: Project, chat: Chat): NavigationMenuItem {
     return {
-      ...baseItem,
-      children: chatsInCurrentProject.value.map((chat) =>
-        formatProjectChat(project, chat)
-      ),
+      label: chat.title || 'Untitled Chat',
+      to: `/projects/${project.id}/chats/${chat.id}`,
+      active: route.params.id === chat.id,
     };
   }
 
-  return baseItem;
-}
+  function formatProjectItem(project: Project): NavigationMenuItem {
+    const isCurrent = isCurrentProject(project.id);
 
-const projectItems = computed<NavigationMenuItem[]>(
-  () => projects.value?.map(formatProjectItem) || []
-);
+    const baseItem: NavigationMenuItem = {
+      label: project.name,
+      to: `/projects/${project.id}`,
+      active: isCurrent,
+      defaultOpen: isCurrent,
+    };
 
-async function handleCreateProject() {
-  const newProject = await createProject();
-  await createChatAndNavigate({
-    projectId: newProject.id,
-  });
-}
+    if (isCurrent) {
+      return {
+        ...baseItem,
+        children: chatsInCurrentProject.value.map(chat =>
+          formatProjectChat(project, chat)
+        ),
+      };
+    }
 
-const chatsWithoutProject = computed(() =>
-  chats.value.filter((c) => c.projectId === undefined)
-);
+    return baseItem;
+  }
 
-function filterChats(startDays: number, endDays?: number) {
-  return computed(() => {
-    return filterChatsByDateRange(
-      chatsWithoutProject.value,
-      startDays,
-      endDays
-    ).map(formatChatItem);
-  });
-}
+  const projectItems = computed<NavigationMenuItem[]>(
+    () => projects.value?.map(formatProjectItem) || []
+  );
 
-const todayChats = filterChats(-1, 1);
-const lastWeekChats = filterChats(1, 7);
-const lastMonthChats = filterChats(7, 30);
-const olderChats = filterChats(30);
+  async function handleCreateProject() {
+    const newProject = await createProject();
+    await createChatAndNavigate({
+      projectId: newProject.id,
+    });
+  }
 
-function formatChatItem(chat: Chat): NavigationMenuItem {
-  return {
-    label: chat.title || "Untitled Chat",
-    to: `/chats/${chat.id}`,
-    active: route.params.id === chat.id,
-  };
-}
+  const chatsWithoutProject = computed(() =>
+    chats.value.filter(c => c.projectId === null)
+  );
 
-async function handleCreateChat() {
-  await createChatAndNavigate();
-}
+  function filterChats(startDays: number, endDays?: number) {
+    return computed(() => {
+      return filterChatsByDateRange(
+        chatsWithoutProject.value,
+        startDays,
+        endDays
+      ).map(formatChatItem);
+    });
+  }
+
+  const todayChats = filterChats(-1, 1);
+  const lastWeekChats = filterChats(1, 7);
+  const lastMonthChats = filterChats(7, 30);
+  const olderChats = filterChats(30);
+
+  function formatChatItem(chat: Chat): NavigationMenuItem {
+    return {
+      label: chat.title || 'Untitled Chat',
+      to: `/chats/${chat.id}`,
+      active: route.params.id === chat.id,
+    };
+  }
+
+  async function handleCreateChat() {
+    await createChatAndNavigate();
+  }
 </script>
 
 <template>

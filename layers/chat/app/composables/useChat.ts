@@ -1,10 +1,10 @@
 export default function useChat(chatId: string) {
   const { chats } = useChats();
-  const chat = computed(() => chats.value.find((c) => c.id === chatId));
+  const chat = computed(() => chats.value.find(c => c.id === chatId));
 
-  const messages = computed<ChatMessage[]>(() => chat.value?.messages || []);
+  const messages = computed<Message[]>(() => chat.value?.messages || []);
 
-  const { data, execute, status } = useFetch<ChatMessage[]>(
+  const { data, execute, status } = useFetch<Message[]>(
     `/api/chats/${chatId}/messages`,
     {
       default: () => [],
@@ -18,7 +18,7 @@ export default function useChat(chatId: string) {
     refresh?: boolean;
   } = {}) {
     const hasExistingMessages = messages.value.length > 1;
-    const isRequestInProgress = status.value !== "idle";
+    const isRequestInProgress = status.value !== 'idle';
     const shouldSkipDueToExistingState =
       !refresh && (hasExistingMessages || isRequestInProgress);
 
@@ -33,7 +33,7 @@ export default function useChat(chatId: string) {
     if (!chat.value) return;
 
     const updatedChat = await $fetch<Chat>(`/api/chats/${chatId}/title`, {
-      method: "POST",
+      method: 'POST',
       body: {
         message,
       },
@@ -48,52 +48,52 @@ export default function useChat(chatId: string) {
       generateChatTitle(message);
     }
 
-    const optimisticUserMessage: ChatMessage = {
+    const optimisticUserMessage: Message = {
       id: `optimistic-user-message-${Date.now()}`,
-      role: "user",
+      role: 'user',
       content: message,
       createdAt: new Date(),
       updatedAt: new Date(),
+      chatId,
     };
     messages.value.push(optimisticUserMessage);
 
     const userMessageIndex = messages.value.length - 1;
 
     try {
-      const newMessage = await $fetch<ChatMessage>(
+      const newMessage = await $fetch<Message>(
         `/api/chats/${chatId}/messages`,
         {
-          method: "POST",
+          method: 'POST',
           body: {
             content: message,
-            role: "user",
+            role: 'user',
           },
         }
       );
       messages.value[userMessageIndex] = newMessage;
     } catch (error) {
-      console.error("Error sending user message", error);
+      console.error('Error sending user message', error);
       messages.value.splice(userMessageIndex, 1);
       return;
     }
 
     messages.value.push({
       id: `streaming-message-${Date.now()}`,
-      role: "assistant",
-      content: "",
+      role: 'assistant',
+      content: '',
       createdAt: new Date(),
       updatedAt: new Date(),
+      chatId,
     });
-    const lastMessage = messages.value[
-      messages.value.length - 1
-    ] as ChatMessage;
+    const lastMessage = messages.value[messages.value.length - 1] as Message;
 
     try {
       const response = await $fetch<ReadableStream>(
         `/api/chats/${chatId}/messages/stream`,
         {
-          method: "POST",
-          responseType: "stream",
+          method: 'POST',
+          responseType: 'stream',
           body: {
             messages: messages.value,
           },
@@ -103,18 +103,19 @@ export default function useChat(chatId: string) {
       const decodedStream = response.pipeThrough(new TextDecoderStream());
 
       const reader = decodedStream.getReader();
-      await reader
-        .read()
-        .then(function processText({ done, value }): Promise<void> | void {
-          if (done) {
-            return;
-          }
+      await reader.read().then(function processText({
+        done,
+        value,
+      }): Promise<void> | void {
+        if (done) {
+          return;
+        }
 
-          lastMessage.content += value;
-          return reader.read().then(processText);
-        });
+        lastMessage.content += value;
+        return reader.read().then(processText);
+      });
     } catch (error) {
-      console.error("Error streaming message:", error);
+      console.error('Error streaming message:', error);
     } finally {
       await fetchMessages({ refresh: true });
     }
@@ -128,24 +129,24 @@ export default function useChat(chatId: string) {
     const originalProjectId = chat.value.projectId;
 
     // Optimistically update the chat
-    chat.value.projectId = projectId || undefined;
+    chat.value.projectId = projectId || null;
 
     try {
       const updatedChat = await $fetch<Chat>(`/api/chats/${chatId}`, {
-        method: "PUT",
+        method: 'PUT',
         body: {
           projectId,
         },
       });
 
       // Update the chat in the chats list
-      const chatIndex = chats.value.findIndex((c) => c.id === chatId);
+      const chatIndex = chats.value.findIndex(c => c.id === chatId);
       if (chatIndex !== -1 && chats.value[chatIndex]) {
         chats.value[chatIndex].projectId = updatedChat.projectId;
         chats.value[chatIndex].updatedAt = updatedChat.updatedAt;
       }
     } catch (error) {
-      console.error("Error assigning chat to project", error);
+      console.error('Error assigning chat to project', error);
       // Revert optimistic update
       chat.value.projectId = originalProjectId;
       throw error;

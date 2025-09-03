@@ -21,7 +21,7 @@ export default defineEventHandler(async e => {
   }
 
   const { messages } = data as {
-    messages: ChatMessage[];
+    messages: Message[];
     chatId: string;
   };
 
