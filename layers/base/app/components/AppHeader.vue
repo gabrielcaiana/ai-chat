@@ -1,17 +1,17 @@
 <script setup lang="ts">
-const appConfig = useAppConfig();
+  const appConfig = useAppConfig();
 
-const { createChatAndNavigate } = useChats();
+  const { createChatAndNavigate } = useChats();
 
-const emit = defineEmits(["toggle-sidebar"]);
+  const emit = defineEmits(['toggle-sidebar']);
 
-function handleToggleSidebar() {
-  emit("toggle-sidebar");
-}
+  function handleToggleSidebar() {
+    emit('toggle-sidebar');
+  }
 
-async function handleCreateChat() {
-  await createChatAndNavigate();
-}
+  async function handleCreateChat() {
+    await createChatAndNavigate();
+  }
 </script>
 
 <template>
@@ -31,36 +31,36 @@ async function handleCreateChat() {
       {{ appConfig.title }}
     </div>
     <div class="header-right">
-      <!-- Nothing to see here! -->
+      <ProfileMenu />
     </div>
   </header>
 </template>
 
 <style scoped>
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4rem; /* 16 * 0.25 = 4rem */
-  background-color: var(--ui-bg-muted);
-  border-bottom: 1px solid var(--ui-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  z-index: 50;
-}
+  .app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4rem; /* 16 * 0.25 = 4rem */
+    background-color: var(--ui-bg-muted);
+    border-bottom: 1px solid var(--ui-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    z-index: 50;
+  }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 
-.header-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-}
+  .header-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
 </style>
