@@ -1,14 +1,25 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: false,
-});
+  definePageMeta({
+    layout: false,
+  });
 
-const appConfig = useAppConfig();
+  const appConfig = useAppConfig();
 
-const { createChatAndNavigate } = useChats();
-async function handleCreateChat() {
-  await createChatAndNavigate();
-}
+  const { createChatAndNavigate } = useChats();
+  const { isAuthenticated } = useAuth();
+
+  async function handleCreateChat() {
+    try {
+      if (!isAuthenticated.value) {
+        await navigateTo('/login');
+        return;
+      }
+      await createChatAndNavigate();
+    } catch (error) {
+      console.error('Failed to create new chat:', error);
+      await navigateTo('/login');
+    }
+  }
 </script>
 
 <template>
@@ -145,222 +156,222 @@ async function handleCreateChat() {
 </template>
 
 <style scoped>
-.landing-page {
-  min-height: 100vh;
-  background: var(--ui-bg);
-  color: var(--ui-text);
-  margin-bottom: 3rem;
-}
+  .landing-page {
+    min-height: 100vh;
+    background: var(--ui-bg);
+    color: var(--ui-text);
+    margin-bottom: 3rem;
+  }
 
-/* Hero Section */
-.hero-section {
-  padding: 10rem 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  background: var(--ui-bg);
-}
+  /* Hero Section */
+  .hero-section {
+    padding: 10rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    background: var(--ui-bg);
+  }
 
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  color: var(--ui-text-highlighted);
-}
-
-.hero-subtitle {
-  font-size: 1.25rem;
-  color: var(--ui-text-muted);
-  line-height: 1.6;
-}
-
-.hero-image {
-  display: flex;
-  justify-content: center;
-}
-
-.hero-img {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  border-radius: 1rem;
-}
-
-/* Section Wrapper for rounded corners */
-.section-wrapper {
-  background: var(--ui-bg-muted);
-  border-radius: 2rem;
-  margin: 0 1rem 2rem 1rem;
-  padding: 2rem 1rem;
-}
-
-/* Features Section */
-.features-section {
-  padding: 6rem 0;
-  background: transparent;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: var(--ui-text-highlighted);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
-  padding: 0 2rem;
-}
-
-.feature-card {
-  background: var(--ui-bg-elevated);
-  border: 1px solid var(--ui-border);
-  border-radius: 1rem;
-  padding: 3rem;
-  text-align: center;
-  transition: transform 0.2s;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--ui-border-accented);
-}
-
-.feature-image {
-  width: 100%;
-  height: auto;
-  min-height: 180px;
-  object-fit: contain;
-  border-radius: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.feature-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--ui-text-highlighted);
-}
-
-.feature-description {
-  color: var(--ui-text-muted);
-  line-height: 1.6;
-}
-
-/* Benefits Section */
-.benefits-section {
-  padding: 5rem 0;
-  background: var(--ui-bg);
-}
-
-.benefits-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-.benefits-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.benefits-description {
-  font-size: 1.125rem;
-  color: var(--ui-text-muted);
-  line-height: 1.6;
-}
-
-.benefits-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.benefit-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.benefit-icon {
-  color: var(--ui-primary);
-  font-size: 1.25rem;
-}
-
-.benefits-image {
-  display: flex;
-  justify-content: center;
-}
-
-.benefits-img {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 1rem;
-}
-
-/* CTA Section */
-.cta-section {
-  padding: 5rem 0;
-  background: transparent;
-}
-
-.cta-content {
-  text-align: center;
-}
-
-.cta-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--ui-text-highlighted);
-}
-
-.cta-subtitle {
-  font-size: 1.25rem;
-  color: var(--ui-text-muted);
-  margin-bottom: 2rem;
-}
-
-.cta-button {
-  padding: 1rem 2rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .hero-section,
-  .benefits-content {
-    grid-template-columns: 1fr;
-    text-align: center;
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--ui-text-highlighted);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--ui-text-muted);
+    line-height: 1.6;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 1rem;
+  }
+
+  /* Section Wrapper for rounded corners */
+  .section-wrapper {
+    background: var(--ui-bg-muted);
+    border-radius: 2rem;
+    margin: 0 1rem 2rem 1rem;
+    padding: 2rem 1rem;
+  }
+
+  /* Features Section */
+  .features-section {
+    padding: 6rem 0;
+    background: transparent;
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--ui-text-highlighted);
   }
 
   .features-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    padding: 0 2rem;
   }
 
-  .cta-images {
-    flex-direction: column;
+  .feature-card {
+    background: var(--ui-bg-elevated);
+    border: 1px solid var(--ui-border);
+    border-radius: 1rem;
+    padding: 3rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--ui-border-accented);
+  }
+
+  .feature-image {
+    width: 100%;
+    height: auto;
+    min-height: 180px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--ui-text-highlighted);
+  }
+
+  .feature-description {
+    color: var(--ui-text-muted);
+    line-height: 1.6;
+  }
+
+  /* Benefits Section */
+  .benefits-section {
+    padding: 5rem 0;
+    background: var(--ui-bg);
+  }
+
+  .benefits-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
     align-items: center;
   }
-}
+
+  .benefits-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .benefits-description {
+    font-size: 1.125rem;
+    color: var(--ui-text-muted);
+    line-height: 1.6;
+  }
+
+  .benefits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .benefit-icon {
+    color: var(--ui-primary);
+    font-size: 1.25rem;
+  }
+
+  .benefits-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .benefits-img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 1rem;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 5rem 0;
+    background: transparent;
+  }
+
+  .cta-content {
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--ui-text-highlighted);
+  }
+
+  .cta-subtitle {
+    font-size: 1.25rem;
+    color: var(--ui-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .cta-button {
+    padding: 1rem 2rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-section,
+    .benefits-content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-images {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
 </style>

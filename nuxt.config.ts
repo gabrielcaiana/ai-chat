@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-20',
 
-  modules: ['@nuxt/eslint', '@nuxt/image'],
+  modules: ['@nuxt/eslint', '@nuxt/image', 'nuxt-auth-utils'],
 
   // TypeScript enhancements
   typescript: {

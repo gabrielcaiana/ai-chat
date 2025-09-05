@@ -1,19 +1,26 @@
-import { getAllChats } from "../../repository/chatRepository";
+import { getAllChats } from '../../repository/chatRepository';
 
 export default defineCachedEventHandler(
-  async () => {
-    const storage = useStorage("db");
-    await storage.setItem("chats:has-new-chat", false);
+  async event => {
+    const userId = await getAuthenticatedUserId(event);
+
+    const storage = useStorage('db');
+    await storage.setItem(`chats:has-new-chat:${userId}`, false);
+
     return getAllChats();
   },
   {
-    name: "getAllChats",
+    name: 'getAllChats',
     maxAge: 0,
-    swr: true, // SWR is enabled by default
-    async shouldInvalidateCache() {
-      const storage = useStorage("db");
-      const hasNewChat = await storage.getItem<boolean>("chats:has-new-chat");
-      return hasNewChat ?? false;
+    swr: false,
+    async shouldInvalidateCache(event) {
+      const userId = await getAuthenticatedUserId(event);
+
+      const storage = useStorage('db');
+      const hasNewChat = await storage.getItem<boolean>(
+        `chats:has-new-chat:${userId}`
+      );
+      return hasNewChat || false;
     },
   }
 );

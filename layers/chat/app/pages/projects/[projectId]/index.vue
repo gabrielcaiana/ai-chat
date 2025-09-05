@@ -1,10 +1,14 @@
 <script setup lang="ts">
-const route = useRoute();
-const projectId = route.params.projectId as string;
+  definePageMeta({
+    middleware: 'auth',
+  });
 
-const { chatsInProject } = useChats();
+  const route = useRoute();
+  const projectId = route.params.projectId as string;
 
-const chats = computed(() => chatsInProject(projectId));
+  const { chatsInProject } = useChats();
+
+  const chats = computed(() => chatsInProject(projectId));
 </script>
 
 <template>
@@ -21,7 +25,7 @@ const chats = computed(() => chatsInProject(projectId));
         <UCard class="h-full">
           <template #header>
             <h3 class="text-md font-medium">
-              {{ chat.title || "Untitled Chat" }}
+              {{ chat.title || 'Untitled Chat' }}
             </h3>
           </template>
           <p

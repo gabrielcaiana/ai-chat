@@ -1,12 +1,15 @@
 import {
   updateProject,
-  getProjectById,
+  getProjectByIdForUser,
 } from '../../repository/projectRepository';
 import { UpdateProjectSchema } from '../../schema';
 
 export default defineEventHandler(async event => {
   const { id } = getRouterParams(event);
-  const project = await getProjectById(id as string);
+  const userId = await getAuthenticatedUserId(event);
+
+  // Verify user owns the project
+  const project = await getProjectByIdForUser(id as string, userId);
   if (!project) return null;
 
   const { success, data } = await readValidatedBody(

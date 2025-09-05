@@ -1,39 +1,43 @@
 <script setup lang="ts">
-const route = useRoute();
-const {
-  chat: chatFromChats,
-  messages,
-  sendMessage,
-  fetchMessages,
-} = useChat(route.params.id as string);
-
-await fetchMessages();
-
-if (!chatFromChats.value) {
-  await navigateTo(`/projects/${route.params.projectId}`, {
-    replace: true,
+  definePageMeta({
+    middleware: 'auth',
   });
-}
 
-const chat = computed(() => chatFromChats.value as Chat);
-const typing = ref(false);
+  const route = useRoute();
+  const {
+    chat: chatFromChats,
+    messages,
+    sendMessage,
+    fetchMessages,
+  } = useChat(route.params.id as string);
 
-const handleSendMessage = async (message: string) => {
-  typing.value = true;
-  await sendMessage(message);
-  typing.value = false;
-};
+  await fetchMessages();
 
-const appConfig = useAppConfig();
-const title = computed(() =>
-  chat.value?.title
-    ? `${chat.value.title} - ${appConfig.title}`
-    : appConfig.title
-);
+  if (!chatFromChats.value) {
+    await navigateTo(`/projects/${route.params.projectId}`, {
+      replace: true,
+    });
+  }
 
-useHead({
-  title,
-});
+  const chat = computed(() => chatFromChats.value as Chat);
+  const typing = ref(false);
+
+  const handleSendMessage = async (message: string) => {
+    typing.value = true;
+    await sendMessage(message);
+    typing.value = false;
+  };
+
+  const appConfig = useAppConfig();
+  const title = computed(() =>
+    chat.value?.title
+      ? `${chat.value.title} - ${appConfig.title}`
+      : appConfig.title
+  );
+
+  useHead({
+    title,
+  });
 </script>
 
 <template>
