@@ -1,8 +1,22 @@
 import { CreateMessageSchema } from '~~/layers/chat/server/schema';
-import { createMessageForChat } from '../../../../repository/chatRepository';
+import {
+  createMessageForChat,
+  getChatByIdForUser,
+} from '../../../../repository/chatRepository';
+import { getAuthenticatedUserId } from '#layers/auth/server/utils/auth';
 
 export default defineEventHandler(async e => {
   const { id } = getRouterParams(e);
+  const userId = await getAuthenticatedUserId(e);
+
+  // Verify user owns the chat
+  const chat = await getChatByIdForUser(id as string, userId);
+  if (!chat) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Chat not found',
+    });
+  }
 
   const { success, data } = await readValidatedBody(
     e,

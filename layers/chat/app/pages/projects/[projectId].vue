@@ -1,51 +1,55 @@
 <script setup lang="ts">
-const route = useRoute();
-const projectId = route.params.projectId as string;
-
-const { project, updateProject } = useProject(projectId);
-const { createChatAndNavigate } = useChats();
-
-if (!project.value) {
-  await navigateTo("/", {
-    replace: true,
+  definePageMeta({
+    middleware: 'auth',
   });
-}
 
-const onChatPage = computed(() => route.params.id);
-const isEditing = ref(false);
-const editedName = ref("");
+  const route = useRoute();
+  const projectId = route.params.projectId as string;
 
-function startEditing() {
-  if (!project.value || onChatPage.value) return;
+  const { project, updateProject } = useProject(projectId);
+  const { createChatAndNavigate } = useChats();
 
-  editedName.value = project.value.name;
-  isEditing.value = true;
-}
-
-function cancelEditing() {
-  isEditing.value = false;
-  editedName.value = "";
-}
-
-async function handleRename() {
-  if (!editedName.value.trim() || !project.value) return;
-  if (editedName.value.trim() === project.value.name) return;
-
-  isEditing.value = false;
-  try {
-    await updateProject({ name: editedName.value.trim() });
-  } catch (error) {
-    console.error("Failed to rename project:", error);
+  if (!project.value) {
+    await navigateTo('/', {
+      replace: true,
+    });
   }
-}
 
-async function handleNewChat() {
-  try {
-    await createChatAndNavigate({ projectId });
-  } catch (error) {
-    console.error("Failed to create new chat:", error);
+  const onChatPage = computed(() => route.params.id);
+  const isEditing = ref(false);
+  const editedName = ref('');
+
+  function startEditing() {
+    if (!project.value || onChatPage.value) return;
+
+    editedName.value = project.value.name;
+    isEditing.value = true;
   }
-}
+
+  function cancelEditing() {
+    isEditing.value = false;
+    editedName.value = '';
+  }
+
+  async function handleRename() {
+    if (!editedName.value.trim() || !project.value) return;
+    if (editedName.value.trim() === project.value.name) return;
+
+    isEditing.value = false;
+    try {
+      await updateProject({ name: editedName.value.trim() });
+    } catch (error) {
+      console.error('Failed to rename project:', error);
+    }
+  }
+
+  async function handleNewChat() {
+    try {
+      await createChatAndNavigate({ projectId });
+    } catch (error) {
+      console.error('Failed to create new chat:', error);
+    }
+  }
 </script>
 
 <template>
@@ -113,72 +117,72 @@ async function handleNewChat() {
 </template>
 
 <style scoped>
-.app-container {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  height: calc(100% - 4rem); /* Account for AppHeader */
-}
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    height: calc(100% - 4rem); /* Account for AppHeader */
+  }
 
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--ui-border);
-}
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--ui-border);
+  }
 
-.title-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  .title-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-.title:hover .edit-icon {
-  opacity: 1;
-}
+  .title:hover .edit-icon {
+    opacity: 1;
+  }
 
-.edit-icon {
-  width: 1rem;
-  height: 1rem;
-  opacity: 0;
-  margin-left: 0.25rem;
-  transition: opacity 0.2s;
-}
+  .edit-icon {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0;
+    margin-left: 0.25rem;
+    transition: opacity 0.2s;
+  }
 
-.edit-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  .edit-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-.edit-actions {
-  display: flex;
-  gap: 0.25rem;
-}
+  .edit-actions {
+    display: flex;
+    gap: 0.25rem;
+  }
 
-.title-input {
-  font-size: 1.5rem;
-  font-weight: 400;
-  padding: 0.25rem 0.5rem 0.25rem 0;
-  height: auto;
-  width: auto;
-  min-width: 200px;
-}
+  .title-input {
+    font-size: 1.5rem;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem 0.25rem 0;
+    height: auto;
+    width: auto;
+    min-width: 200px;
+  }
 
-.no-chats,
-.loading {
-  text-align: center;
-  padding: 3rem 0;
-  color: var(--ui-text-muted);
-}
+  .no-chats,
+  .loading {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--ui-text-muted);
+  }
 </style>
