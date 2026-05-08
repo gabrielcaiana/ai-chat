@@ -1,30 +1,42 @@
 <script setup lang="ts">
-const isSidebarOpen = ref(true);
+  const isSidebarOpen = ref(true);
 </script>
 
 <template>
-  <div class="layout-container">
-    <AppHeader @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
+  <div class="layout">
+    <AppHeader
+      :is-sidebar-open="isSidebarOpen"
+      @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
+    />
     <AppSidebar :is-open="isSidebarOpen" />
     <main
-      class="main-content transition-all duration-300 ease-in-out"
-      :class="{
-        'ml-64': isSidebarOpen,
-      }"
+      class="layout__main"
+      :class="{ 'layout__main--shifted': isSidebarOpen }"
     >
       <slot />
     </main>
+    <SettingsModal />
   </div>
 </template>
 
 <style scoped>
-.layout-container {
-  height: calc(100vh - 4rem);
-  background-color: var(--ui-bg);
-}
+  .layout {
+    height: 100vh;
+    overflow: hidden;
+    background: var(--ui-bg);
+  }
 
-.main-content {
-  height: 100%;
-  margin-top: 4rem;
-}
+  .layout__main {
+    height: 100vh;
+    margin-top: var(--h-header-h);
+    height: calc(100vh - var(--h-header-h));
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .layout__main--shifted {
+    margin-left: var(--h-sidebar-w);
+  }
 </style>

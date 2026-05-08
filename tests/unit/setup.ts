@@ -28,7 +28,7 @@ vi.mock('#app', () => ({
     forward: vi.fn(),
   }),
   useAppConfig: () => ({
-    title: 'AI Chat App',
+    title: 'ai.caiana.studio',
   }),
   useTemplateRef: (_name: string) => ref(null),
 }));

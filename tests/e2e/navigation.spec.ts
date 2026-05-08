@@ -11,56 +11,55 @@ test.describe('Navigation and Routing', () => {
   });
 
   test('should have working page structure', async ({ page }) => {
-    // Verificar se a página carregou corretamente
     await expect(page).toHaveURL(/\/$/);
 
-    // Verificar se há seções principais
-    await helpers.expectElementVisible('.landing-page');
-    await helpers.expectElementVisible('.hero-section');
-    await helpers.expectElementVisible('.features-section');
+    // Main landing page sections
+    await helpers.expectElementVisible('.lp');
+    await helpers.expectElementVisible('.lp-hero');
+    await helpers.expectElementVisible('.lp-features');
   });
 
   test('should handle page interactions correctly', async ({ page }) => {
-    // Verificar se os botões CTA estão funcionais
-    const mainButton = page.locator('button:has-text("Start Your First Chat")');
+    // Primary CTA button is functional
+    const mainButton = page.locator('button:has-text("Start chatting")');
     await expect(mainButton).toBeVisible();
     await expect(mainButton).toBeEnabled();
 
-    // Verificar se há seção de features
-    await helpers.expectElementVisible('.features-grid');
-    await helpers.expectElementVisible('.feature-card:first-child');
+    // Features grid and first card are visible
+    await helpers.expectElementVisible('.lp-features__grid');
+    await helpers.expectElementVisible('.lp-card:first-child');
   });
 
   test('should display all sections correctly', async () => {
-    // Verificar seção hero
-    await helpers.expectElementVisible('.hero-section');
-    await helpers.expectElementVisible('.hero-title');
+    // Hero section
+    await helpers.expectElementVisible('.lp-hero');
+    await helpers.expectElementVisible('.lp-hero__title');
 
-    // Verificar seção features
-    await helpers.expectElementVisible('.features-section');
-    await helpers.expectElementVisible('.features-grid');
+    // Features section
+    await helpers.expectElementVisible('.lp-features');
+    await helpers.expectElementVisible('.lp-features__grid');
 
-    // Verificar seção benefits
-    await helpers.expectElementVisible('.benefits-section');
+    // CTA section
+    await helpers.expectElementVisible('.lp-cta');
 
-    // Verificar seção CTA
-    await helpers.expectElementVisible('.cta-section');
+    // Footer
+    await helpers.expectElementVisible('.lp-footer');
   });
 
   test('should maintain responsive design', async ({ page }) => {
-    // Testar desktop
+    // Desktop
     await page.setViewportSize({ width: 1920, height: 1080 });
-    await helpers.expectElementVisible('.hero-title');
-    await helpers.expectElementVisible('.features-grid');
+    await helpers.expectElementVisible('.lp-hero__title');
+    await helpers.expectElementVisible('.lp-features__grid');
 
-    // Testar mobile
+    // Mobile
     await page.setViewportSize({ width: 375, height: 667 });
-    await helpers.expectElementVisible('.hero-title');
-    await helpers.expectElementVisible('.features-grid');
+    await helpers.expectElementVisible('.lp-hero__title');
+    await helpers.expectElementVisible('.lp-features__grid');
 
-    // Testar tablet
+    // Tablet
     await page.setViewportSize({ width: 768, height: 1024 });
-    await helpers.expectElementVisible('.hero-title');
-    await helpers.expectElementVisible('.features-grid');
+    await helpers.expectElementVisible('.lp-hero__title');
+    await helpers.expectElementVisible('.lp-features__grid');
   });
 });
