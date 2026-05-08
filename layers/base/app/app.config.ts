@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  title: "Ai Chat",
+  title: 'ai.caiana.studio',
   // current using main.css theme colors
   // ui: {
   //   colors: {

@@ -1,15 +1,15 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // Message role enum and type definition
-const MessageRole = z.enum(["user", "assistant"]);
+const MessageRole = z.enum(['user', 'assistant']);
 
 // Base message schema
 export const MessageSchema = z
   .object({
     content: z.string(),
     role: MessageRole,
-    id: z.uuid({ version: "v4" }).optional(),
-    chatId: z.uuid({ version: "v4" }).optional(),
+    id: z.uuid({ version: 'v4' }).optional(),
+    chatId: z.uuid({ version: 'v4' }).optional(),
   })
   .strict();
 
@@ -17,7 +17,7 @@ export const MessageSchema = z
 export const ChatMessageSchema = z
   .object({
     messages: z.array(MessageSchema),
-    chatId: z.uuid({ version: "v4" }),
+    chatId: z.uuid({ version: 'v4' }),
   })
   .strict();
 
@@ -45,15 +45,17 @@ export const UpdateProjectSchema = z
 export const CreateChatSchema = z
   .object({
     title: z.string().min(1).optional(),
-    projectId: z.uuid({ version: "v4" }).optional(),
+    projectId: z.uuid({ version: 'v4' }).optional(),
   })
   .strict();
 
-export const UpdateChatTitleSchema = z
-  .object({
-    message: z.string().min(1),
-  })
-  .strict();
+// provider and model are optional — the title endpoint uses the same model the user has selected
+// so it generates a contextually consistent title without requiring a separate configuration
+export const UpdateChatTitleSchema = z.object({
+  message: z.string().min(1),
+  provider: z.string().optional(),
+  model: z.string().optional(),
+});
 
 export const UpdateChatSchema = z
   .object({
