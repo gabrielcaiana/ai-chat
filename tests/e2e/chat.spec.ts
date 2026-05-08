@@ -11,65 +11,59 @@ test.describe('Chat Functionality', () => {
   });
 
   test('should have chat interface elements', async () => {
-    // Verificar se há elementos de chat na landing page
-    await helpers.expectElementVisible(
-      'button:has-text("Start Your First Chat")'
-    );
+    // Primary CTA to start a chat
+    await helpers.expectElementVisible('button:has-text("Start chatting")');
 
-    // Verificar se há seções de features relacionadas ao chat
-    await helpers.expectElementVisible('.feature-card:first-child');
+    // First feature card is visible
+    await helpers.expectElementVisible('.lp-card:first-child');
   });
 
   test('should have proper page structure', async () => {
-    // Verificar se há seções principais
-    await helpers.expectElementVisible('.landing-page');
+    // Root container
+    await helpers.expectElementVisible('.lp');
 
-    // Verificar se há conteúdo de features
-    await helpers.expectElementVisible('.features-grid');
+    // Features grid
+    await helpers.expectElementVisible('.lp-features__grid');
 
-    // Verificar se há seção de benefícios
-    await helpers.expectElementVisible('.benefits-section');
+    // CTA section
+    await helpers.expectElementVisible('.lp-cta');
   });
 
   test('should have working CTA buttons', async ({ page }) => {
-    // Verificar botão principal
-    const mainButton = page.locator('button:has-text("Start Your First Chat")');
-    await expect(mainButton).toBeVisible();
-    await expect(mainButton).toBeEnabled();
+    // Hero button
+    const heroButton = page.locator('button:has-text("Start chatting")');
+    await expect(heroButton).toBeVisible();
+    await expect(heroButton).toBeEnabled();
 
-    // Verificar botão secundário
-    const secondaryButton = page.locator(
-      'button:has-text("Create A New Chat")'
-    );
-    await expect(secondaryButton).toBeVisible();
-    await expect(secondaryButton).toBeEnabled();
+    // Nav "Open App" button
+    const navButton = page.locator('button:has-text("Open App")');
+    await expect(navButton).toBeVisible();
+    await expect(navButton).toBeEnabled();
   });
 
   test('should display feature cards correctly', async ({ page }) => {
-    // Verificar se há cards de features
-    const featureCards = page.locator('.feature-card');
-    await expect(featureCards).toHaveCount(3);
+    // The landing page has 4 feature cards: Multi-Model, Streaming, Projects, Privacy
+    const featureCards = page.locator('.lp-card');
+    await expect(featureCards).toHaveCount(4);
   });
 
   test('should be accessible', async ({ page }) => {
-    // Verificar se botões CTA têm texto descritivo
+    // CTA buttons have descriptive text
     const ctaButtons = page.locator(
-      'button:has-text("Start Your First Chat"), button:has-text("Create A New Chat")'
+      'button:has-text("Start chatting"), button:has-text("Open App")'
     );
 
     for (let i = 0; i < (await ctaButtons.count()); i++) {
       const button = ctaButtons.nth(i);
       const hasText = (await button.textContent()) !== '';
-
       expect(hasText).toBeTruthy();
     }
 
-    // Verificar se imagens têm alt text
+    // Images have alt text
     const images = page.locator('img');
     for (let i = 0; i < (await images.count()); i++) {
       const image = images.nth(i);
       const altText = await image.getAttribute('alt');
-
       expect(altText).toBeTruthy();
       expect(altText!.length).toBeGreaterThan(0);
     }

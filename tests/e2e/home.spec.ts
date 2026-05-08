@@ -11,42 +11,40 @@ test.describe('Home Page', () => {
   });
 
   test('should have proper page structure', async ({ page }) => {
-    // Verificar se há seções principais
-    await helpers.expectElementVisible('.landing-page');
+    // Root container of the landing page
+    await helpers.expectElementVisible('.lp');
 
-    // Verificar se há conteúdo de hero
-    await helpers.expectElementVisible('.hero-content');
+    // Hero section
+    await helpers.expectElementVisible('.lp-hero');
 
-    // Verificar se há botão de CTA
-    const ctaButton = page.locator('button:has-text("Start Your First Chat")');
+    // Primary CTA button in the hero
+    const ctaButton = page.locator('button:has-text("Start chatting")');
     await expect(ctaButton).toBeVisible();
   });
 
   test('should be responsive on different screen sizes', async ({ page }) => {
-    // Testar desktop
+    // Desktop
     await page.setViewportSize({ width: 1920, height: 1080 });
-    await helpers.expectElementVisible('.hero-title');
+    await helpers.expectElementVisible('.lp-hero__title');
 
-    // Testar mobile
+    // Mobile
     await page.setViewportSize({ width: 375, height: 667 });
-    await helpers.expectElementVisible('.hero-title');
+    await helpers.expectElementVisible('.lp-hero__title');
 
-    // Testar tablet
+    // Tablet
     await page.setViewportSize({ width: 768, height: 1024 });
-    await helpers.expectElementVisible('.hero-title');
+    await helpers.expectElementVisible('.lp-hero__title');
   });
 
   test('should have working CTA buttons', async ({ page }) => {
-    // Verificar botão principal
-    const mainButton = page.locator('button:has-text("Start Your First Chat")');
-    await expect(mainButton).toBeVisible();
-    await expect(mainButton).toBeEnabled();
+    // Hero primary button
+    const heroButton = page.locator('button:has-text("Start chatting")');
+    await expect(heroButton).toBeVisible();
+    await expect(heroButton).toBeEnabled();
 
-    // Verificar botão secundário
-    const secondaryButton = page.locator(
-      'button:has-text("Create A New Chat")'
-    );
-    await expect(secondaryButton).toBeVisible();
-    await expect(secondaryButton).toBeEnabled();
+    // Nav "Open App" button
+    const navButton = page.locator('button:has-text("Open App")');
+    await expect(navButton).toBeVisible();
+    await expect(navButton).toBeEnabled();
   });
 });
