@@ -1,18 +1,18 @@
 {
-  "name": "ai-chat",
+  "name": "ai-lab",
   "private": true,
   "type": "module",
   "author": "gabrielcaiana",
   "license": "MIT",
   "version": "0.0.0",
-  "description": "A simple AI chat application",
+  "description": "Personal laboratory for exploring, comparing and benchmarking LLMs",
   "keywords": [
     "ai",
     "chat",
     "nuxt",
     "vue"
   ],
-  "homepage": "https://github.com/gabrielcaiana/ai-chat",
+  "homepage": "https://github.com/gabrielcaiana/ai-lab",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -47,22 +47,22 @@
     "seed": "pnpm dlx tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.76",
-    "@ai-sdk/openai": "1.3.24",
+    "@ai-sdk/anthropic": "^4.0.79",
+    "@ai-sdk/openai": "4.0.92",
     "@nuxt/eslint": "1.9.0",
     "@nuxt/image": "^1.11.0",
     "@nuxt/ui": "^3.3.3",
     "@nuxtjs/mdc": "^0.17.3",
     "@prisma/client": "6.9.0",
-    "ai": "4.3.19",
+    "ai": "7.0.138",
+    "ai-sdk-ollama": "^4",
     "eslint": "^9.34.0",
     "nuxt": "^4.0.3",
-    "ollama-ai-provider": "1.2.0",
     "prisma": "6.9.0",
     "uuid": "^11.1.0",
     "vue": "^3.5.21",
     "vue-router": "^4.5.1",
-    "zod": "^4.1.5"
+    "zod": "^4.6.7"
   },
   "packageManager": "pnpm@8.10.0+sha512.9c2cb83f2b6cf6a25d8c58300bf99197c7ef3be84cf3e766f29054b40b83b42f8aaba6fcc314a9ecf27c00f7ce80a757bb4c608800e7adbe2d29dc5c7056f5be",
   "devDependencies": {

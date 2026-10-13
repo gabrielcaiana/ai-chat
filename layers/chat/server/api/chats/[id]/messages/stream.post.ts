@@ -8,7 +8,7 @@
 //   Browser (useChat.sendMessage)
 //     → POST /api/chats/[id]/messages/stream
 //         headers: { x-ai-token: '<user api key>' }
-//         body:    { messages: [...], provider: 'openai', model: 'gpt-4o' }
+//         body:    { messages: [...], provider: 'openai', model: 'gpt-6.1-sol' }
 //     → createModel(provider, model, apiKey)  ← ai-service factory
 //     → streamText() via Vercel AI SDK        ← provider-agnostic streaming
 //     → TransformStream:
@@ -34,7 +34,7 @@ export default defineEventHandler(async event => {
   const body = await readBody(event);
 
   const provider: string = body?.provider ?? 'openai';
-  const model: string = body?.model ?? 'gpt-4o-mini';
+  const model: string = body?.model ?? 'gpt-6-luna';
   const apiToken: string =
     getHeader(event, 'x-ai-token') ||
     body?.apiToken ||

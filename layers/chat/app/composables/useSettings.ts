@@ -14,111 +14,16 @@
 //   3. Settings → openSettings() → user saves → save() → localStorage updated
 //   4. useChat() reads apiToken/selectedModel/selectedProvider to pass to the API
 //
-// Adding a new provider: add an entry to AI_PROVIDERS below, install the SDK,
+// Adding a new provider: add an entry to AI_PROVIDERS (shared/catalog/models.ts), install the SDK,
 // and add a `case` to createModel() in ai-service.ts. That's it.
 
-export interface ModelOption {
-  value: string;
-  label: string;
-  description: string;
-  context: string;
-}
+// The provider/model catalog (with prices) lives in layers/chat/shared/catalog/models.ts
+// so the server can use the same table to estimate costs.
+import { AI_PROVIDERS } from '../../shared/catalog/models';
+import type { ModelOption, Provider } from '../../shared/catalog/models';
 
-export interface Provider {
-  id: string;
-  label: string;
-  models: ModelOption[];
-}
-
-// AI_PROVIDERS — the registry of all supported providers and their available models.
-// This list drives both the Settings UI (provider tabs + model cards) and the
-// model badge displayed in the header and chat input.
-export const AI_PROVIDERS: Provider[] = [
-  {
-    id: 'openai',
-    label: 'OpenAI',
-    models: [
-      {
-        value: 'gpt-4o',
-        label: 'GPT-4o',
-        description: 'Most capable',
-        context: '128k ctx',
-      },
-      {
-        value: 'gpt-4o-mini',
-        label: 'GPT-4o Mini',
-        description: 'Balanced',
-        context: '128k ctx',
-      },
-      {
-        value: 'o1',
-        label: 'o1',
-        description: 'Reasoning',
-        context: '200k ctx',
-      },
-      {
-        value: 'o1-mini',
-        label: 'o1-mini',
-        description: 'Fast reasoning',
-        context: '128k ctx',
-      },
-    ],
-  },
-  {
-    id: 'anthropic',
-    label: 'Anthropic',
-    models: [
-      {
-        value: 'claude-opus-4-7',
-        label: 'Claude Opus 4',
-        description: 'Most capable',
-        context: '200k ctx',
-      },
-      {
-        value: 'claude-sonnet-4-6',
-        label: 'Claude Sonnet 4',
-        description: 'Balanced',
-        context: '200k ctx',
-      },
-      {
-        value: 'claude-haiku-4-5-20251001',
-        label: 'Claude Haiku 4',
-        description: 'Fastest',
-        context: '200k ctx',
-      },
-    ],
-  },
-  {
-    id: 'ollama',
-    label: 'Ollama (Local)',
-    models: [
-      {
-        value: 'llama3.2',
-        label: 'Llama 3.2',
-        description: 'Local model',
-        context: 'Local',
-      },
-      {
-        value: 'llama3.1:8b',
-        label: 'Llama 3.1 8B',
-        description: 'Local model',
-        context: 'Local',
-      },
-      {
-        value: 'mistral',
-        label: 'Mistral 7B',
-        description: 'Local model',
-        context: 'Local',
-      },
-      {
-        value: 'deepseek-coder',
-        label: 'DeepSeek Coder',
-        description: 'Code focused',
-        context: 'Local',
-      },
-    ],
-  },
-];
+export { AI_PROVIDERS };
+export type { ModelOption, Provider };
 
 export function useSettings() {
   // Global reactive state — shared across all component instances via useState key
@@ -126,7 +31,7 @@ export function useSettings() {
   const apiToken = useState<string>('settings.apiToken', () => '');
   const selectedModel = useState<string>(
     'settings.selectedModel',
-    () => 'gpt-4o-mini'
+    () => 'gpt-6-luna'
   );
   const selectedProvider = useState<string>(
     'settings.selectedProvider',
