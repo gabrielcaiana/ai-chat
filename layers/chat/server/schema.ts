@@ -62,3 +62,29 @@ export const UpdateChatSchema = z
     projectId: z.string().uuid(),
   })
   .strict();
+
+// Compare (side-by-side) — one prompt, 1..6 models.
+// apiKeys are optional per provider; they are used for this request only and
+// never persisted. Missing keys fall back to server env vars.
+export const CompareTargetSchema = z
+  .object({
+    provider: z.enum(['openai', 'anthropic', 'ollama']),
+    model: z.string().min(1).max(100),
+  })
+  .strict();
+
+export const CompareRequestSchema = z
+  .object({
+    prompt: z.string().trim().min(1).max(20_000),
+    targets: z.array(CompareTargetSchema).min(1).max(6),
+    apiKeys: z
+      .object({
+        openai: z.string().optional(),
+        anthropic: z.string().optional(),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict();
+
+export type CompareRequest = z.infer<typeof CompareRequestSchema>;
