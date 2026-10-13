@@ -64,21 +64,27 @@ pnpm vitest run tests/unit/path/to/file.test.ts
 Central factory for all model creation:
 
 ```typescript
-createModel(provider, model, apiKey) → LanguageModelV1
+createModel(provider, model, apiKey) → LanguageModel   // AI SDK v7, no casts
 ```
 
 Supported providers:
 
-- `'openai'` — via `@ai-sdk/openai`. Models: gpt-4o, gpt-4o-mini, o1, o1-mini
-- `'anthropic'` — via `@ai-sdk/anthropic`. Models: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
-- `'ollama'` — via `ollama-ai-provider`. Models: any model installed locally
+- `'openai'` — via `@ai-sdk/openai`. Models: gpt-6-astra, gpt-6.1-sol, gpt-6-luna
+- `'anthropic'` — via `@ai-sdk/anthropic`. Models: claude-fable-5-1, claude-opus-5-5, claude-sonnet-5-5, claude-haiku-5-5
+- `'ollama'` — via `ai-sdk-ollama` (`OLLAMA_BASE_URL`, default localhost:11434). Models: any model installed locally
+
+The model catalog + price table lives in `layers/chat/shared/catalog/models.ts` (used by Settings UI, Compare page and cost estimation). In v7, system prompts go in `instructions`, not in `messages`.
+
+### Compare service (`layers/chat/server/services/compare-service.ts`)
+
+`runComparison({ prompt, targets, resolveModel, emit })` runs `streamText` for every target in parallel and returns per-model `CompareResult` (output, TTFT, latency, tokens, estimated cost, error). `createCompareStream()` wraps it as NDJSON for `POST /api/compare`; runs are persisted via `runRepository` (`Run` → `RunResult`). Pure and DI-friendly: unit tests use `MockLanguageModelV4` from `ai/test`.
 
 ### Stream endpoint (`layers/chat/server/api/chats/[id]/messages/stream.post.ts`)
 
 Reads from request:
 
 - `body.provider` — which provider to use (default: `'openai'`)
-- `body.model` — which model to use (default: `'gpt-4o-mini'`)
+- `body.model` — which model to use (default: `'gpt-6-luna'`)
 - `header['x-ai-token']` or `body.apiToken` — API key (falls back to `NUXT_OPENAI_API_KEY`)
 
 ### Data flow
@@ -101,6 +107,7 @@ Prisma schema at `prisma/schema.prisma`.
 
 ```
 User → Project → Chat → Message
+Run → RunResult            (compare history)
 ```
 
 - Project→Chat: `SET NULL` on delete (chats survive project deletion)
@@ -118,6 +125,9 @@ User → Project → Chat → Message
 | POST     | `/api/chats/[id]/messages/stream`   | Stream AI response                |
 | POST     | `/api/chats/[id]/messages/generate` | Non-streaming response            |
 | POST     | `/api/chats/[id]/title`             | Auto-generate title               |
+| POST     | `/api/compare`                      | Side-by-side run (NDJSON stream)  |
+| GET      | `/api/compare/runs`                 | Run history                       |
+| GET      | `/api/compare/runs/[id]`            | One run with results              |
 | GET/POST | `/api/projects`                     | List / create projects            |
 | GET/PUT  | `/api/projects/[id]`                | Get / update project              |
 
