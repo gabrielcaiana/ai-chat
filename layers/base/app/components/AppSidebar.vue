@@ -49,6 +49,24 @@
 
 <template>
   <aside class="sb" :class="{ 'sb--closed': !isOpen }">
+    <!-- Lab tools -->
+    <div class="sb-section">
+      <div class="sb-section__head">
+        <span class="sb-section__label">Lab</span>
+      </div>
+      <div class="sb-nav">
+        <NuxtLink
+          to="/compare"
+          class="sb-item"
+          :class="{ 'sb-item--active': route.path.startsWith('/compare') }"
+          data-testid="nav-compare"
+        >
+          <UIcon name="i-lucide-columns-3" class="sb-item__icon" />
+          <span class="sb-item__label">Compare models</span>
+        </NuxtLink>
+      </div>
+    </div>
+
     <!-- Projects -->
     <div v-if="projects?.length" class="sb-section">
       <div class="sb-section__head">

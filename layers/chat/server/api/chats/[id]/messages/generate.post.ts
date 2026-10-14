@@ -29,7 +29,7 @@ export default defineEventHandler(async e => {
 
   // Same provider/model/token resolution as stream.post.ts
   const provider: string = body?.provider ?? 'openai';
-  const modelName: string = body?.model ?? 'gpt-4o-mini';
+  const modelName: string = body?.model ?? 'gpt-6-luna';
   const apiKey: string =
     getHeader(e, 'x-ai-token') ||
     body?.apiToken ||

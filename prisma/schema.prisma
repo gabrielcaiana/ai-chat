@@ -61,3 +61,40 @@ model Message {
   updatedAt DateTime    @updatedAt
   @@index([chatId])
 }
+
+// ── Compare (side-by-side) ────────────────────────────────────────────────
+// A Run is one prompt fanned out to N models in parallel. Each model's
+// outcome (text, timings, tokens, estimated cost, error) is a RunResult.
+
+enum RunResultStatus {
+  success
+  error
+}
+
+model Run {
+  id        String      @id @default(uuid())
+  prompt    String
+  results   RunResult[]
+  createdAt DateTime    @default(now())
+  @@index([createdAt])
+}
+
+model RunResult {
+  id           String          @id @default(uuid())
+  runId        String
+  run          Run             @relation(fields: [runId], references: [id], onDelete: Cascade)
+  position     Int
+  provider     String
+  model        String
+  status       RunResultStatus
+  output       String          @default("")
+  error        String?
+  finishReason String?
+  ttftMs       Int?
+  latencyMs    Int?
+  inputTokens  Int?
+  outputTokens Int?
+  costUsd      Float?
+  createdAt    DateTime        @default(now())
+  @@index([runId])
+}

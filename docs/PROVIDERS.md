@@ -36,14 +36,14 @@ import { createGroq } from '@ai-sdk/groq'; // ← add import
 
 export function createModel(
   provider: string = 'openai',
-  modelName: string = 'gpt-4o-mini',
+  modelName: string = 'gpt-6-luna',
   apiKey?: string
-): LanguageModelV1 {
+): LanguageModel {
   switch (provider) {
     case 'groq': {
       // ← add case
       const groq = createGroq({ apiKey: apiKey ?? '' });
-      return groq(modelName) as unknown as LanguageModelV1;
+      return groq(modelName);
     }
     // ... existing cases
   }
@@ -103,7 +103,7 @@ case 'together': {
     apiKey: apiKey ?? '',
     baseURL: 'https://api.together.xyz/v1',
   })
-  return together(modelName) as unknown as LanguageModelV1
+  return together(modelName)
 }
 ```
 
@@ -155,7 +155,7 @@ When adding a new provider, verify:
 
 ### Anthropic
 
-Anthropic models require `max_tokens` to be set (the Vercel AI SDK handles this, but streaming may behave differently than OpenAI). Test with `claude-haiku-4-5-20251001` first — it's the cheapest.
+Anthropic models require `max_tokens` to be set (the Vercel AI SDK handles this, but streaming may behave differently than OpenAI). Test with `claude-haiku-5-5` first — it's the cheapest.
 
 ### Ollama
 

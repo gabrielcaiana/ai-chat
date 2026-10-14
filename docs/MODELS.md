@@ -1,5 +1,7 @@
 # Models Overview
 
+> **Note (2026-10):** the model IDs and prices the app actually uses live in [`layers/chat/shared/catalog/models.ts`](../layers/chat/shared/catalog/models.ts) and the README table. The per-model notes below describe the previous generation and are kept as historical reference.
+
 Reference guide for all supported models — their capabilities, trade-offs, and the best scenarios to test each one.
 
 ---

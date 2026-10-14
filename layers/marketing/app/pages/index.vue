@@ -87,7 +87,7 @@
           >
           <div class="lp-terminal__model">
             <UIcon name="i-lucide-cpu" class="lp-terminal__model-icon" />
-            gpt-4o-mini
+            gpt-6-luna
           </div>
         </div>
         <div class="lp-terminal__body">

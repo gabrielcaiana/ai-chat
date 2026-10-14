@@ -33,7 +33,7 @@ export default defineEventHandler(async e => {
   // 2. body.apiToken (fallback if header is not used)
   // 3. Server-side env var NUXT_OPENAI_API_KEY (shared fallback for OpenAI)
   const provider: string = data.provider ?? 'openai';
-  const modelName: string = data.model ?? 'gpt-4o-mini';
+  const modelName: string = data.model ?? 'gpt-6-luna';
   const apiKey: string =
     getHeader(e, 'x-ai-token') || useRuntimeConfig().openaiApiKey || '';
 
